@@ -1,0 +1,2720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>THESISEBI SLAYER // HARDCORE v3.0</title>
+  <!-- Gaming & Tech Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-void: #030306;
+      --panel-bg: rgba(9, 10, 19, 0.94);
+      --neon-cyan: #00f3ff;
+      --neon-pink: #ff007f;
+      --neon-gold: #ffd700;
+      --neon-red: #ff2a4b;
+      --neon-purple: #b829ff;
+      --neon-green: #00ff88;
+      --slate-100: #f1f5f9;
+      --slate-300: #cbd5e1;
+      --slate-400: #94a3b8;
+      --slate-700: #334155;
+      --slate-800: #1e293b;
+      --slate-900: #0f172a;
+      --slate-950: #020617;
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg-void);
+      color: var(--slate-100);
+      font-family: 'Share Tech Mono', monospace;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    .font-orbitron { font-family: 'Orbitron', sans-serif; }
+    .font-rajdhani { font-family: 'Rajdhani', sans-serif; }
+    .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+
+    /* Self-Contained Layout & Utility Classes (Zero External CSS Dependencies) */
+    .hidden { display: none !important; }
+    .fixed { position: fixed; }
+    .relative { position: relative; }
+    .absolute { position: absolute; }
+    .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+    .z-0 { z-index: 0; }
+    .z-10 { z-index: 10; }
+    .z-20 { z-index: 20; }
+    .z-40 { z-index: 40; }
+    .z-50 { z-index: 50; }
+    .w-full { width: 100%; }
+    .h-full { height: 100%; }
+    .block { display: block; }
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .flex-wrap { flex-wrap: wrap; }
+    .flex-1 { flex: 1 1 0%; }
+    .items-center { align-items: center; }
+    .items-start { align-items: flex-start; }
+    .items-end { align-items: flex-end; }
+    .justify-center { justify-content: center; }
+    .justify-between { justify-content: space-between; }
+    .text-center { text-align: center; }
+    .text-left { text-align: left; }
+    .text-right { text-align: right; }
+    .pointer-events-none { pointer-events: none; }
+    .pointer-events-auto { pointer-events: auto; }
+    .overflow-hidden { overflow: hidden; }
+    .overflow-y-auto { overflow-y: auto; }
+    .cursor-pointer { cursor: pointer; }
+    .uppercase { text-transform: uppercase; }
+    .whitespace-nowrap { white-space: nowrap; }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.65rem; }
+    @media (min-width: 640px) {
+      .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .sm-row { flex-direction: row !important; }
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: rgba(3, 3, 7, 0.92);
+      backdrop-filter: blur(8px);
+    }
+
+    .card-box {
+      width: 100%;
+      border-radius: 1rem;
+      background: var(--panel-bg);
+      padding: 1.5rem;
+      position: relative;
+    }
+
+    /* Cyber Grid & Scanlines */
+    .scanlines {
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.36) 50%),
+                  linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      background-size: 100% 3px, 6px 100%;
+      pointer-events: none;
+    }
+
+    /* Chromatic Damage Flash */
+    @keyframes damageFlashAnim {
+      0% { box-shadow: inset 0 0 90px rgba(255, 20, 60, 0.85); }
+      100% { box-shadow: inset 0 0 0px rgba(255, 20, 60, 0); }
+    }
+    .damage-vignette {
+      animation: damageFlashAnim 0.35s ease-out forwards;
+    }
+
+    .glitch-title {
+      text-shadow: 2px 0 var(--neon-pink), -2px 0 var(--neon-cyan);
+      animation: glitchPulse 2.8s infinite alternate;
+    }
+
+    @keyframes glitchPulse {
+      0%, 91%, 100% {
+        text-shadow: 2px 0 var(--neon-pink), -2px 0 var(--neon-cyan);
+        transform: skewX(0deg);
+      }
+      94% {
+        text-shadow: -4px 0 var(--neon-pink), 4px 0 var(--neon-cyan);
+        transform: skewX(-6deg);
+      }
+      97% {
+        text-shadow: 4px 0 var(--neon-gold), -4px 0 var(--neon-red);
+        transform: skewX(5deg);
+      }
+    }
+
+    .neon-border-cyan {
+      border: 1px solid rgba(0, 243, 255, 0.45);
+      box-shadow: 0 0 22px rgba(0, 243, 255, 0.18), inset 0 0 14px rgba(0, 243, 255, 0.08);
+    }
+
+    .neon-border-pink {
+      border: 1px solid rgba(255, 0, 127, 0.55);
+      box-shadow: 0 0 24px rgba(255, 0, 127, 0.24), inset 0 0 14px rgba(255, 0, 127, 0.1);
+    }
+
+    .neon-border-gold {
+      border: 1px solid rgba(255, 215, 0, 0.65);
+      box-shadow: 0 0 26px rgba(255, 215, 0, 0.28), inset 0 0 14px rgba(255, 215, 0, 0.12);
+    }
+
+    .neon-border-red {
+      border: 2px solid rgba(255, 42, 75, 0.75);
+      box-shadow: 0 0 36px rgba(255, 42, 75, 0.35);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 0.9rem 1.25rem;
+      border: none;
+      border-radius: 0.75rem;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #ffffff;
+      background: linear-gradient(90deg, #00c6ff, #0072ff, #ff007f);
+      box-shadow: 0 0 22px rgba(0, 243, 255, 0.38);
+      cursor: pointer;
+      transition: transform 0.12s ease, filter 0.15s ease;
+    }
+    .btn-primary:hover { filter: brightness(1.12); }
+    .btn-primary:active { transform: scale(0.98); }
+
+    .btn-secondary {
+      padding: 0.65rem 1rem;
+      border-radius: 0.65rem;
+      background: #0d111d;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+    .btn-secondary:hover {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+    }
+
+    .pass-input {
+      width: 100%;
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.65rem;
+      letter-spacing: 0.45em;
+      padding: 0.85rem 1rem;
+      border-radius: 0.75rem;
+      background: #030308;
+      border: 2px solid rgba(0, 243, 255, 0.45);
+      color: var(--neon-cyan);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .pass-input:focus {
+      border-color: var(--neon-pink);
+      box-shadow: 0 0 22px rgba(255, 0, 127, 0.45);
+    }
+
+    /* Skill Button Styling */
+    .skill-btn {
+      position: relative;
+      transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s ease;
+      overflow: hidden;
+    }
+    .skill-btn:active:not(:disabled) { transform: scale(0.92); }
+    .skill-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+
+    /* ULT Ring Pulse */
+    @keyframes ultReadyPulse {
+      0%, 100% {
+        filter: drop-shadow(0 0 8px #ffd700) drop-shadow(0 0 18px #00f3ff);
+        transform: scale(1);
+      }
+      50% {
+        filter: drop-shadow(0 0 18px #ffd700) drop-shadow(0 0 32px #ff007f);
+        transform: scale(1.07);
+      }
+    }
+    .ult-ready { animation: ultReadyPulse 1.05s infinite ease-in-out; }
+
+    @keyframes pointerBounce {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-9px); }
+    }
+    .tutorial-bounce { animation: pointerBounce 0.85s infinite ease-in-out; }
+
+    .tutorial-highlight-ring {
+      box-shadow: 0 0 0 4px #ffd700, 0 0 30px #ff007f, 0 0 48px #00f3ff !important;
+      z-index: 60 !important;
+    }
+
+    .hud-pill {
+      background: rgba(8, 9, 18, 0.9);
+      backdrop-filter: blur(8px);
+      border-radius: 0.85rem;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.55);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #07070e; }
+    ::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.35); border-radius: 999px; }
+  </style>
+</head>
+<body>
+
+  <!-- Full-Screen Interactive Game Canvas -->
+  <canvas id="gameCanvas" class="fixed inset-0 w-full h-full block z-0"></canvas>
+
+  <!-- Damage Vignette & CRT Scanline Overlays -->
+  <div id="damageOverlay" class="fixed inset-0 z-10 pointer-events-none"></div>
+  <div class="scanlines fixed inset-0 z-10"></div>
+
+  <!-- ========================================================= -->
+  <!-- 1. PASSWORD ACCESS TERMINAL (FIRST SCREEN)                -->
+  <!-- ========================================================= -->
+  <div id="loginScreen" class="modal-backdrop">
+    <div class="card-box neon-border-cyan" style="max-width: 440px;">
+      <!-- Top Cyber Header Bar -->
+      <div class="flex items-center justify-between" style="font-size: 11px; color: #38bdf8; border-bottom: 1px solid rgba(0,243,255,0.2); padding-bottom: 10px; margin-bottom: 18px;">
+        <span>● SYS.AUTH // HARDCORE_KERNEL</span>
+        <span>SEC-LVL: OMEGA</span>
+      </div>
+
+      <!-- Game Title -->
+      <div class="text-center" style="margin-bottom: 22px;">
+        <div style="display:inline-block; padding: 3px 12px; border-radius: 999px; background: rgba(255,0,127,0.14); border: 1px solid rgba(255,0,127,0.45); color: #ff66b2; font-size: 10px; font-weight: bold; letter-spacing: 0.16em; margin-bottom: 10px;">
+          [ THESIS ERADICATION PROTOCOL v3.0 ]
+        </div>
+        <h1 class="font-orbitron glitch-title" style="font-weight: 900; font-size: 2.1rem; line-height: 1.1; margin: 0; color: #ffffff;">
+          THESISEBI<br><span style="color: #00f3ff;">SLAYER</span>
+        </h1>
+        <p class="font-rajdhani" style="font-size: 14px; color: #94a3b8; margin-top: 10px;">
+          Enter authorized neural passkey to access persistent career arsenal &amp; deploy into Perp territory.
+        </p>
+      </div>
+
+      <!-- Passkey Input Form -->
+      <form id="loginForm" style="display: flex; flex-direction: column; gap: 14px;">
+        <div>
+          <label for="passInput" style="display:block; font-size: 11px; letter-spacing: 0.14em; color: #67e8f9; margin-bottom: 6px; font-weight: bold;">
+            &gt; ACCESS PASSKEY (4-DIGIT PIN)
+          </label>
+          <input
+            id="passInput"
+            type="password"
+            inputmode="numeric"
+            maxlength="8"
+            placeholder="••••"
+            autocomplete="off"
+            class="pass-input"
+          />
+        </div>
+
+        <div id="loginError" class="hidden text-center" style="font-size: 12px; font-weight: bold; color: #fda4af; background: rgba(136,19,55,0.45); border: 1px solid rgba(244,63,94,0.45); border-radius: 8px; padding: 8px;">
+          [ACCESS DENIED] INVALID CREDENTIALS
+        </div>
+
+        <button type="submit" class="btn-primary">
+          INITIALIZE UPLINK &gt;&gt;
+        </button>
+      </form>
+
+      <!-- Sebi Career Preview Bar -->
+      <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid #1e293b; display: flex; justify-content: space-between; font-size: 11px; color: #94a3b8;">
+        <span>OPERATIVE: <strong style="color: #00f3ff;">SEBI</strong></span>
+        <span>BANKED DOUGH: <strong id="loginDoughPreview" style="color: #ffd700;">0</strong></span>
+        <span>BEST: <strong id="loginBestScore" style="color: #ff66b2;">0</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 2. DEVELOPER TELEMETRY DASHBOARD (PASSKEY: 8104)          -->
+  <!-- ========================================================= -->
+  <div id="devModal" class="hidden modal-backdrop">
+    <div class="card-box neon-border-pink overflow-y-auto" style="max-width: 680px; max-height: 92vh;">
+      <div class="flex flex-wrap items-center justify-between" style="gap: 10px; border-bottom: 1px solid rgba(255,0,127,0.3); padding-bottom: 14px; margin-bottom: 18px;">
+        <div>
+          <span style="padding: 2px 8px; border-radius: 4px; background: rgba(255,0,127,0.2); border: 1px solid rgba(255,0,127,0.5); color: #f9a8d4; font-size: 10px; font-weight: bold; letter-spacing: 0.14em;">
+            ROOT ADMIN // DEV CONSOLE (8104)
+          </span>
+          <h2 class="font-orbitron" style="font-weight: 900; font-size: 1.35rem; color: #ffffff; margin: 6px 0 0 0;">
+            SEBI LIVE TELEMETRY &amp; TRY-RUN
+          </h2>
+        </div>
+        <button id="devLogoutBtn" class="btn-secondary">LOCK TERMINAL</button>
+      </div>
+
+      <!-- Sebi's Live Telemetry Metrics -->
+      <div class="grid-4" style="margin-bottom: 16px;">
+        <div style="padding: 12px; border-radius: 12px; background: #05050c; border: 1px solid rgba(0,243,255,0.3);">
+          <div style="font-size: 10px; color: #94a3b8;">SEBI SESSIONS</div>
+          <div id="devPlayCount" class="font-orbitron" style="font-weight: 900; font-size: 1.4rem; color: #00f3ff; margin-top: 4px;">0</div>
+          <div style="font-size: 10px; color: #0891b2;">Times Played</div>
+        </div>
+        <div style="padding: 12px; border-radius: 12px; background: #05050c; border: 1px solid rgba(255,215,0,0.35);">
+          <div style="font-size: 10px; color: #94a3b8;">BEST SCORE</div>
+          <div id="devBestScore" class="font-orbitron" style="font-weight: 900; font-size: 1.4rem; color: #ffd700; margin-top: 4px;">0</div>
+          <div style="font-size: 10px; color: #ca8a04;">All-Time Record</div>
+        </div>
+        <div style="padding: 12px; border-radius: 12px; background: #05050c; border: 1px solid rgba(255,0,127,0.35);">
+          <div style="font-size: 10px; color: #94a3b8;">HIGHEST WAVE</div>
+          <div id="devBestWave" class="font-orbitron" style="font-weight: 900; font-size: 1.4rem; color: #ff007f; margin-top: 4px;">1</div>
+          <div style="font-size: 10px; color: #be185d;">Max Sector</div>
+        </div>
+        <div style="padding: 12px; border-radius: 12px; background: #05050c; border: 1px solid rgba(0,255,136,0.3);">
+          <div style="font-size: 10px; color: #94a3b8;">PERPS SLAYED</div>
+          <div id="devTotalKills" class="font-orbitron" style="font-weight: 900; font-size: 1.4rem; color: #00ff88; margin-top: 4px;">0</div>
+          <div style="font-size: 10px; color: #059669;">Total Shredded</div>
+        </div>
+      </div>
+
+      <!-- Banked Dough & Upgrade Levels Breakdown -->
+      <div style="padding: 14px; border-radius: 12px; background: #06060f; border: 1px solid #1e293b; margin-bottom: 18px; font-size: 12px;">
+        <div class="flex justify-between" style="margin-bottom: 8px;">
+          <span style="color: #94a3b8;">Banked Dough Wallet:</span>
+          <strong id="devDoughWallet" style="color: #ffd700;">0 DOUGH</strong>
+        </div>
+        <div class="flex justify-between" style="margin-bottom: 8px;">
+          <span style="color: #94a3b8;">Armory Tiers (Fire / Dmg / CDR / HP / Drone):</span>
+          <strong id="devUpgradeSummary" style="color: #38bdf8;">LV 1 / 1 / 1 / 1 / 0</strong>
+        </div>
+        <div class="flex justify-between" style="margin-bottom: 8px;">
+          <span style="color: #94a3b8;">Tutorial Status:</span>
+          <strong id="devTutorialStatus" style="color: #fcd34d;">PENDING</strong>
+        </div>
+        <div class="flex justify-between" style="margin-bottom: 10px;">
+          <span style="color: #94a3b8;">Last Active Timestamp:</span>
+          <span id="devLastPlayed" style="color: #cbd5e1;">Never</span>
+        </div>
+        <p style="color: #94a3b8; padding-top: 10px; border-top: 1px solid #1e293b; margin: 0; line-height: 1.45;">
+          <strong style="color: #ff66b2;">Dev Sandbox Try-Run:</strong> Launches the full interactive live tutorial (including the shark &amp; hearts celebration + gift) followed by hardcore combat without modifying Sebi's official saved data.
+        </p>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex flex-col sm-row" style="gap: 10px;">
+        <button id="devStartTryRunBtn" class="btn-primary flex-1" style="background: linear-gradient(90deg, #ff007f, #9333ea);">
+          LAUNCH DEV TRY-RUN (WITH TUTORIAL) &gt;&gt;
+        </button>
+        <button id="devResetStatsBtn" class="btn-secondary" style="border-color: rgba(244,63,94,0.5); color: #fda4af;">
+          RESET SEBI DATA
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 3. MISSION BRIEFING MODAL (PRE-TUTORIAL EXPLANATION)      -->
+  <!-- ========================================================= -->
+  <div id="briefingModal" class="hidden modal-backdrop">
+    <div class="card-box neon-border-cyan" style="max-width: 520px;">
+      <div class="flex items-center justify-between" style="margin-bottom: 12px;">
+        <span style="padding: 3px 10px; border-radius: 6px; background: rgba(0,243,255,0.14); border: 1px solid rgba(0,243,255,0.4); color: #67e8f9; font-size: 10px; font-weight: bold; letter-spacing: 0.14em;">
+          INCOMING TRANSMISSION // HARDCORE BRIEF
+        </span>
+        <span id="modeBadgeBrief" style="font-size: 10px; font-weight: bold; padding: 2px 8px; border-radius: 4px; background: rgba(0,255,136,0.16); color: #6ee7b7;">
+          OPERATIVE: SEBI
+        </span>
+      </div>
+
+      <h2 class="font-orbitron" style="font-weight: 900; font-size: 1.45rem; color: #ffffff; margin: 0 0 12px 0;">
+        OBJECTIVE: SHRED THE <span style="color: #ff2a4b;">PERPS</span>
+      </h2>
+
+      <div style="background: #04040a; padding: 14px; border-radius: 12px; border: 1px solid #1e293b; margin-bottom: 18px; font-size: 13px; color: #cbd5e1; line-height: 1.55;">
+        <p style="margin-top: 0;">
+          Listen up, <strong style="color: #00f3ff;">Sebi</strong>. Hostile thesis manuscripts codenamed <strong style="color: #fb7185;">PERPS</strong> and volatile <strong style="color: #ffd700;">EVIL LOAFS</strong> are swarming the mainframe—and they fire deadly red-ink citations back at you!
+        </p>
+        <ul style="padding-left: 0; list-style: none; margin: 12px 0 0 0; display: flex; flex-direction: column; gap: 9px; font-size: 12px;">
+          <li><strong style="color: #00f3ff;">[01] DODGE &amp; SHRED:</strong> Move your cyber-craft (Mouse/Touch/WASD) to dodge incoming red-ink bolts while shredding Perps.</li>
+          <li><strong style="color: #ff66b2;">[02] TACTICAL OVERCLOCKS:</strong> Trigger <strong style="color: #00f3ff;">PUMA</strong> for hyper-speed &amp; rapid fire, and <strong style="color: #ff007f;">WUV 21</strong> for 2X devastating damage.</li>
+          <li><strong style="color: #ffd700;">[03] GRIND DOUGH &amp; EVOLVE:</strong> Dough shards are scarce! Bank Dough across runs to unlock 10-tier Armory upgrades &amp; weapon evolutions.</li>
+        </ul>
+      </div>
+
+      <button id="startLiveTutorialBtn" class="btn-primary" style="background: linear-gradient(90deg, #00f3ff, #00ff88); color: #020617;">
+        START LIVE COMBAT TUTORIAL &gt;&gt;
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 4. IN-GAME HUD (TOP BAR + LIVE TUTORIAL BANNER + CONTROLS) -->
+  <!-- ========================================================= -->
+  <div id="gameHud" class="hidden fixed inset-0 z-20 pointer-events-none flex flex-col justify-between" style="padding: 14px;">
+    <!-- Top HUD Bar -->
+    <div class="flex flex-wrap items-start justify-between" style="gap: 8px;">
+      <!-- Left: Firewall HP, Score, Best -->
+      <div class="hud-pill pointer-events-auto" style="border: 1px solid rgba(0,243,255,0.35); padding: 10px 14px; min-width: 215px;">
+        <div class="flex items-center justify-between" style="font-size: 10px; font-weight: bold; letter-spacing: 0.08em; margin-bottom: 5px;">
+          <span style="color: #67e8f9;">
+            <span id="hudRoleTag" style="padding: 1px 6px; border-radius: 4px; background: rgba(0,243,255,0.2); color: #00f3ff; margin-right: 4px;">SEBI</span>
+            SHIELD HP
+          </span>
+          <span id="hpText" style="color: #34d399;">100 / 100</span>
+        </div>
+        <!-- HP Bar -->
+        <div style="width: 100%; height: 9px; background: #0f172a; border-radius: 999px; overflow: hidden; border: 1px solid #334155; margin-bottom: 7px;">
+          <div id="hpBar" style="height: 100%; width: 100%; background: linear-gradient(90deg, #00ff88, #00f3ff); transition: width 0.15s ease;"></div>
+        </div>
+        <div class="flex items-center justify-between font-orbitron" style="font-size: 11px;">
+          <div>
+            <span class="font-mono-tech" style="font-size: 10px; color: #94a3b8;">SCORE: </span>
+            <span id="scoreText" style="color: #ffffff; font-weight: bold;">0</span>
+          </div>
+          <div>
+            <span class="font-mono-tech" style="font-size: 10px; color: #94a3b8;">BEST: </span>
+            <span id="bestScoreHud" style="color: #ffd700; font-weight: bold;">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: Wave & Combo Indicator -->
+      <div class="hud-pill text-center" style="border: 1px solid rgba(255,0,127,0.4); padding: 8px 16px;">
+        <div class="font-orbitron" style="font-weight: 900; font-size: 14px; color: #ff66b2; letter-spacing: 0.1em;">
+          WAVE <span id="waveText" style="color: #ffffff;">1</span>
+        </div>
+        <div style="font-size: 10px; color: #94a3b8; font-weight: bold;">
+          PERPS LEFT: <span id="perpsLeftText" style="color: #fb7185;">0</span>
+        </div>
+        <div id="comboBadge" class="hidden font-orbitron" style="margin-top: 2px; font-size: 10px; color: #ffd700; font-weight: 900;">
+          3X STREAK!
+        </div>
+      </div>
+
+      <!-- Right: Dough Wallet, Replay Tutorial, Sound & Armory Button -->
+      <div class="pointer-events-auto flex items-center" style="gap: 8px;">
+        <div class="hud-pill text-right" style="border: 1px solid rgba(255,215,0,0.45); padding: 7px 12px;">
+          <div style="font-size: 9px; color: #fde047; font-weight: bold; letter-spacing: 0.1em;">BANKED DOUGH</div>
+          <div id="creditsText" class="font-orbitron" style="font-weight: 900; font-size: 16px; color: #ffd700;">0</div>
+        </div>
+
+        <button id="openShopBtn" title="Upgrades Armory" class="hud-pill cursor-pointer flex items-center" style="border: 1px solid rgba(255,215,0,0.55); padding: 10px 12px; color: #ffd700; gap: 5px; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 900;">
+          <svg style="width: 17px; height: 17px;" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+          <span>ARMORY</span>
+        </button>
+
+        <button id="replayTutBtn" title="Replay Tutorial" class="hud-pill cursor-pointer" style="border: 1px solid #334155; padding: 10px; color: #38bdf8; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 800;">
+          ?
+        </button>
+
+        <button id="muteToggleBtn" title="Toggle Audio" class="hud-pill cursor-pointer" style="border: 1px solid #334155; padding: 10px; color: #cbd5e1;">
+          <svg id="soundOnIcon" style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+          </svg>
+          <svg id="soundOffIcon" class="hidden" style="width: 18px; height: 18px; color: #fb7185;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Live Interactive Tutorial Callout Banner (Floating Dynamic Guide) -->
+    <div id="liveTutorialBanner" class="hidden pointer-events-none" style="margin: 0 auto; max-width: 460px; width: 100%;">
+      <div style="border-radius: 16px; background: rgba(11, 7, 24, 0.96); border: 2px solid #ffd700; box-shadow: 0 0 32px rgba(255,215,0,0.45); padding: 12px 16px; text-align: center;">
+        <div class="font-orbitron" style="font-size: 10px; font-weight: bold; letter-spacing: 0.16em; color: #fde047; margin-bottom: 4px;">
+          ● <span id="tutStepLabel">LIVE TRAINING // STEP 1 OF 4</span>
+        </div>
+        <p id="tutInstructionText" style="font-size: 13px; font-weight: bold; color: #ffffff; margin: 0;">
+          AIM &amp; CLICK / TAP ON THE ROGUE PERP TO SHRED IT!
+        </p>
+        <div id="tutPointerArrow" class="font-orbitron tutorial-bounce" style="margin-top: 6px; color: #ffd700; font-size: 11px; font-weight: 900;">
+          ▼ FOLLOW THE GLOWING TARGET ▼
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Tactical Abilities Dock (PUMA | ULT RING | WUV 21) -->
+    <div class="pointer-events-auto flex items-end justify-center relative" style="gap: 16px; padding-bottom: 6px;">
+      <!-- Floating Tutorial Pointer for PUMA -->
+      <div id="tutPointerPuma" class="hidden tutorial-bounce whitespace-nowrap z-50 font-orbitron" style="position: absolute; top: -46px; left: calc(50% - 175px); background: #00f3ff; color: #020617; font-weight: 900; font-size: 10px; padding: 4px 10px; border-radius: 8px; box-shadow: 0 0 15px #00f3ff;">
+        CLICK PUMA! [Q] ▼
+      </div>
+
+      <!-- PUMA (Speed Overclock) -->
+      <button id="pumaBtn" class="skill-btn cursor-pointer flex flex-col items-center justify-center" style="width: 106px; padding: 10px 12px; border-radius: 16px; background: rgba(7,17,26,0.95); border: 2px solid rgba(0,243,255,0.75); box-shadow: 0 0 20px rgba(0,243,255,0.25);">
+        <div id="pumaCdOverlay" style="position: absolute; inset: 0; background: rgba(2,6,23,0.84); transform-origin: bottom; transform: scaleY(0);"></div>
+        <div class="relative z-10 flex items-center" style="gap: 5px;">
+          <svg style="width: 18px; height: 18px; color: #67e8f9;" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/>
+          </svg>
+          <span class="font-orbitron" style="font-weight: 900; font-size: 13px; color: #67e8f9; letter-spacing: 0.08em;">PUMA</span>
+        </div>
+        <span id="pumaStatusText" class="relative z-10" style="font-size: 9px; font-weight: bold; color: #cffafe; margin-top: 2px;">
+          SPEED [Q]
+        </span>
+      </button>
+
+      <!-- Floating Tutorial Pointer for ULT -->
+      <div id="tutPointerUlt" class="hidden tutorial-bounce whitespace-nowrap z-50 font-orbitron" style="position: absolute; top: -54px; left: 50%; transform: translateX(-50%); background: #ffd700; color: #020617; font-weight: 900; font-size: 10px; padding: 4px 12px; border-radius: 8px; box-shadow: 0 0 20px #ffd700;">
+        OK TO USE! UNLEASH ULT [SPACE] ▼
+      </div>
+
+      <!-- ULT BUTTON WITH CIRCULAR PROGRESS RING -->
+      <div id="ultWrapper" class="relative flex items-center justify-center" style="width: 98px; height: 98px;">
+        <svg class="absolute inset-0 w-full h-full pointer-events-none" style="transform: rotate(-90deg);" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="6.5" />
+          <circle
+            id="ultProgressRing"
+            cx="50"
+            cy="50"
+            r="44"
+            fill="none"
+            stroke="#ffd700"
+            stroke-width="7"
+            stroke-linecap="round"
+            stroke-dasharray="276.46"
+            stroke-dashoffset="276.46"
+            style="transition: stroke-dashoffset 0.15s ease;"
+          />
+        </svg>
+
+        <button id="ultBtn" disabled class="skill-btn cursor-pointer flex flex-col items-center justify-center text-center" style="width: 76px; height: 76px; border-radius: 999px; background: radial-gradient(circle, #221706, #08060c); border: 2px solid rgba(255,215,0,0.55);">
+          <span class="font-orbitron" style="font-weight: 900; font-size: 14px; color: #fde047; letter-spacing: 0.1em;">ULT</span>
+          <span id="ultPctText" style="font-size: 9px; font-weight: bold; color: #fef08a; margin-top: 2px;">0%</span>
+        </button>
+      </div>
+
+      <!-- Floating Tutorial Pointer for WUV 21 -->
+      <div id="tutPointerWuv" class="hidden tutorial-bounce whitespace-nowrap z-50 font-orbitron" style="position: absolute; top: -46px; left: calc(50% + 62px); background: #ff007f; color: #ffffff; font-weight: 900; font-size: 10px; padding: 4px 10px; border-radius: 8px; box-shadow: 0 0 15px #ff007f;">
+        CLICK WUV 21! [E] ▼
+      </div>
+
+      <!-- WUV 21 (2x Double Damage) -->
+      <button id="wuvBtn" class="skill-btn cursor-pointer flex flex-col items-center justify-center" style="width: 106px; padding: 10px 12px; border-radius: 16px; background: rgba(25,7,18,0.95); border: 2px solid rgba(255,0,127,0.75); box-shadow: 0 0 20px rgba(255,0,127,0.28);">
+        <div id="wuvCdOverlay" style="position: absolute; inset: 0; background: rgba(2,6,23,0.84); transform-origin: bottom; transform: scaleY(0);"></div>
+        <div class="relative z-10 flex items-center" style="gap: 5px;">
+          <svg style="width: 16px; height: 16px; color: #f472b6;" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <span class="font-orbitron" style="font-weight: 900; font-size: 13px; color: #f9a8d4; letter-spacing: 0.06em;">WUV 21</span>
+        </div>
+        <span id="wuvStatusText" class="relative z-10" style="font-size: 9px; font-weight: bold; color: #fbcfe8; margin-top: 2px;">
+          2X DMG [E]
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 5. TUTORIAL COMPLETION: SHARKS & LOVE CELEBRATION MODAL   -->
+  <!-- ========================================================= -->
+  <div id="celebrationModal" class="hidden modal-backdrop" style="z-index: 50; background: rgba(4,4,8,0.82);">
+    <div class="card-box text-center" style="max-width: 490px; border-radius: 24px; background: linear-gradient(180deg, #0d071c, #080b18); border: 2px solid #f472b6; box-shadow: 0 0 50px rgba(255,0,127,0.55), 0 0 80px rgba(0,243,255,0.35);">
+      <!-- Animated Cyber Shark SVG Emblem -->
+      <div style="margin: 0 auto 10px auto; width: 120px; height: 92px; display: flex; align-items: center; justify-content: center;">
+        <svg viewBox="0 0 160 110" style="width: 100%; height: 100%; filter: drop-shadow(0 0 16px rgba(0,243,255,0.85));">
+          <path d="M28 32 C28 26, 20 26, 20 32 C20 38, 28 43, 28 43 C28 43, 36 38, 36 32 C36 26, 28 26, 28 32 Z" fill="#ff007f"/>
+          <path d="M132 25 C132 20, 125 20, 125 25 C125 30, 132 34, 132 34 C132 34, 139 30, 139 25 C139 20, 132 20, 132 25 Z" fill="#ff4da6"/>
+          <path d="M135 76 C135 71, 128 71, 128 76 C128 81, 135 85, 135 85 C135 85, 142 81, 142 76 C142 71, 135 71, 135 76 Z" fill="#ff007f"/>
+          <path d="M22 62 Q58 28 112 46 L142 30 L132 56 L146 78 L112 68 Q68 85 22 62 Z" fill="#00f3ff" stroke="#ffffff" stroke-width="2.5"/>
+          <path d="M68 38 L78 14 L92 40 Z" fill="#ff007f" stroke="#ffffff" stroke-width="2"/>
+          <path d="M30 62 Q68 77 108 64 Q72 68 30 62 Z" fill="#e0faff"/>
+          <circle cx="46" cy="54" r="4" fill="#05050a"/>
+          <circle cx="45" cy="53" r="1.5" fill="#ffd700"/>
+          <path d="M34 63 Q46 70 58 63" fill="none" stroke="#05050a" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <div style="display:inline-block; padding: 3px 12px; border-radius: 999px; background: rgba(255,0,127,0.2); border: 1px solid rgba(244,114,182,0.5); color: #f9a8d4; font-size: 10px; font-weight: bold; letter-spacing: 0.14em; margin-bottom: 8px;">
+        APEX SHARK SQUADRON SALUTE
+      </div>
+
+      <h2 class="font-orbitron" style="font-weight: 900; font-size: 1.65rem; color: #00f3ff; text-shadow: 0 0 18px rgba(255,0,127,0.7); line-height: 1.15; margin: 0 0 10px 0;">
+        CONGRATULATIONS<br><span style="color: #ff66b2;">U ARE NOW READY!</span>
+      </h2>
+
+      <p style="font-size: 13px; color: #cbd5e1; margin: 0 0 16px 0; line-height: 1.5;">
+        You survived basic training, <strong style="color: #00f3ff;">Sebi</strong>! The cyber-sharks approve. Dough is scarce out there—take this starter ration and start your grind:
+      </p>
+
+      <!-- Starter Gift Box -->
+      <div class="text-left" style="border-radius: 14px; background: #060510; border: 1px solid rgba(255,215,0,0.6); padding: 14px; margin-bottom: 18px;">
+        <div class="font-orbitron" style="font-size: 11px; font-weight: bold; color: #ffd700; margin-bottom: 8px;">
+          [ GIFT UNLOCKED // SEBI'S STARTER RATION ]
+        </div>
+        <div class="flex justify-between" style="font-size: 12px; color: #e2e8f0; margin-bottom: 5px;">
+          <span>+25 Starter Dough Shards</span>
+          <strong style="color: #00ff88;">BANKED</strong>
+        </div>
+        <div class="flex justify-between" style="font-size: 12px; color: #e2e8f0; margin-bottom: 5px;">
+          <span>Apex Shark Squadron Emblem</span>
+          <strong style="color: #00f3ff;">UNLOCKED</strong>
+        </div>
+        <div class="flex justify-between" style="font-size: 12px; color: #e2e8f0;">
+          <span>Emergency 100% ULT Charge</span>
+          <strong style="color: #ff66b2;">PRIMED</strong>
+        </div>
+      </div>
+
+      <button id="claimGiftStartBtn" class="btn-primary" style="background: linear-gradient(90deg, #ff007f, #9333ea, #00f3ff);">
+        DEPLOY TO WAVE 1 &gt;&gt;
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 6. UPGRADES ARMORY MODAL (MULTI-RUN PROGRESSION TREE)     -->
+  <!-- ========================================================= -->
+  <div id="upgradeModal" class="hidden modal-backdrop">
+    <div class="card-box neon-border-gold overflow-y-auto" style="max-width: 680px; max-height: 92vh;">
+      <div class="flex items-center justify-between" style="border-bottom: 1px solid rgba(255,215,0,0.3); padding-bottom: 12px; margin-bottom: 14px;">
+        <div>
+          <span style="font-size: 10px; font-weight: bold; color: #fde047; letter-spacing: 0.14em;">PERSISTENT ARMORY // LONG-TERM EVOLUTION</span>
+          <h2 class="font-orbitron" style="font-weight: 900; font-size: 1.35rem; color: #ffffff; margin: 3px 0 0 0;">UPGRADE &amp; PRESTIGE SYSTEMS</h2>
+        </div>
+        <div class="text-right">
+          <div style="font-size: 10px; color: #94a3b8;">BANKED DOUGH</div>
+          <div id="shopCreditsDisplay" class="font-orbitron" style="font-weight: 900; font-size: 1.35rem; color: #ffd700;">0</div>
+        </div>
+      </div>
+
+      <!-- Weapon Evolution Milestone Banner -->
+      <div id="evolutionMilestoneBar" style="background: #05050c; border: 1px solid rgba(0,243,255,0.35); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; font-size: 11px;">
+        <div class="flex justify-between items-center">
+          <span style="color: #67e8f9; font-weight: bold;">CURRENT WEAPON CHASSIS: <strong id="currentChassisName" style="color: #ffffff;">MK-I PULSE BLASTER</strong></span>
+          <span id="nextMilestoneHint" style="color: #ffd700;">Next Evolution: Fire Core Lv.3</span>
+        </div>
+      </div>
+
+      <div id="upgradeList" class="grid-2" style="margin-bottom: 18px;">
+        <!-- Populated dynamically via JS -->
+      </div>
+
+      <button id="closeShopBtn" class="btn-primary" style="background: linear-gradient(90deg, #f59e0b, #ea580c); color: #020617;">
+        RESUME COMBAT &gt;&gt;
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 7. GAME OVER / RUN SUMMARY MODAL                          -->
+  <!-- ========================================================= -->
+  <div id="gameOverModal" class="hidden modal-backdrop" style="z-index: 50;">
+    <div class="card-box neon-border-red text-center" style="max-width: 450px;">
+      <div style="display:inline-block; padding: 3px 12px; border-radius: 999px; background: rgba(244,63,94,0.2); border: 1px solid rgba(244,63,94,0.5); color: #fda4af; font-size: 10px; font-weight: bold; letter-spacing: 0.14em; margin-bottom: 8px;">
+        SHIELD SHATTERED // SYSTEM OVERRUN
+      </div>
+      <h2 class="font-orbitron" style="font-weight: 900; font-size: 1.75rem; color: #ffffff; margin: 0 0 6px 0;">PERPS OVERWHELMED</h2>
+      <p id="gameOverSubtitle" style="font-size: 12px; color: #94a3b8; margin: 0 0 16px 0;">
+        Your Dough shards are safely banked! Hit the Armory to evolve your weapons and push deeper.
+      </p>
+
+      <div class="grid-2 text-left" style="background: #05050b; padding: 14px; border-radius: 12px; border: 1px solid #1e293b; margin-bottom: 18px;">
+        <div>
+          <div style="font-size: 10px; color: #94a3b8;">RUN SCORE</div>
+          <div id="finalScoreText" class="font-orbitron" style="font-weight: 900; font-size: 1.25rem; color: #00f3ff;">0</div>
+        </div>
+        <div>
+          <div style="font-size: 10px; color: #94a3b8;">ALL-TIME BEST</div>
+          <div id="finalBestScoreText" class="font-orbitron" style="font-weight: 900; font-size: 1.25rem; color: #ffd700;">0</div>
+        </div>
+        <div>
+          <div style="font-size: 10px; color: #94a3b8;">WAVE REACHED</div>
+          <div id="finalWaveText" class="font-orbitron" style="font-weight: 900; font-size: 1.15rem; color: #ff66b2;">1</div>
+        </div>
+        <div>
+          <div style="font-size: 10px; color: #94a3b8;">DOUGH EARNED THIS RUN</div>
+          <div id="finalDoughRunText" class="font-orbitron" style="font-weight: 900; font-size: 1.15rem; color: #00ff88;">+0</div>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm-row" style="gap: 10px;">
+        <button id="gameOverArmoryBtn" class="btn-secondary" style="border-color: #ffd700; color: #ffd700;">
+          ARMORY
+        </button>
+        <button id="playAgainBtn" class="btn-primary flex-1">
+          PLAY AGAIN &gt;&gt;
+        </button>
+        <button id="backToLoginBtn" class="btn-secondary">
+          EXIT
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * ============================================================================
+     * THESISEBI SLAYER // HARDCORE v3.0 ENGINE
+     * - Steep Hardcore Difficulty + Aggressive Enemy Projectiles
+     * - Scarce Dough Economy + Persistent Multi-Run 10-Tier Armory & Evolutions
+     * - Dual-Passkey Access (1006 Sebi / 8104 Dev Telemetry & Sandbox)
+     * - Interactive Live Tutorial + Shark & Hearts Celebration
+     * ============================================================================
+     */
+
+    // --------------------------------------------------------------------------
+    // 1. PERSISTENT STORAGE & TELEMETRY MANAGER
+    // --------------------------------------------------------------------------
+    const STORAGE_KEY = 'thesisebi_slayer_hardcore_v3';
+
+    function getDefaultSaveData() {
+      return {
+        sebiPlayCount: 0,
+        bestScore: 0,
+        highestWave: 1,
+        totalKills: 0,
+        bankedDough: 0,
+        tutorialCompleted: false,
+        starterGiftClaimed: false,
+        lastPlayed: 'Never',
+        upgrades: {
+          fireRate: 1,  // Max 10
+          damage: 1,    // Max 10
+          cdr: 1,       // Max 8
+          maxHp: 1,     // Max 10
+          drone: 0,     // Max 5
+          crit: 0       // Max 8
+        }
+      };
+    }
+
+    function loadSaveData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          const def = getDefaultSaveData();
+          return {
+            ...def,
+            ...parsed,
+            upgrades: { ...def.upgrades, ...(parsed.upgrades || {}) }
+          };
+        }
+      } catch (e) {
+        console.warn('Storage read fallback:', e);
+      }
+      return getDefaultSaveData();
+    }
+
+    function commitSaveData(data) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch (e) {
+        console.warn('Storage write fallback:', e);
+      }
+    }
+
+    let saveData = loadSaveData();
+    let sessionMode = 'SEBI'; // 'SEBI' or 'DEV'
+
+    // Active runtime profile (either mirrors saveData for Sebi or a sandbox clone for Dev)
+    let activeProfile = JSON.parse(JSON.stringify(saveData));
+
+    // --------------------------------------------------------------------------
+    // 2. PROCEDURAL WEB AUDIO SYNTHESIZER (ZERO EXTERNAL ASSETS)
+    // --------------------------------------------------------------------------
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      toggleMute() {
+        this.muted = !this.muted;
+        document.getElementById('soundOnIcon').classList.toggle('hidden', this.muted);
+        document.getElementById('soundOffIcon').classList.toggle('hidden', !this.muted);
+      }
+
+      playShoot(isWuv = false, isPuma = false) {
+        if (this.muted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = isWuv ? 'sawtooth' : 'triangle';
+        const startFreq = isWuv ? 820 : (isPuma ? 990 : 660);
+        osc.frequency.setValueAtTime(startFreq, now);
+        osc.frequency.exponentialRampToValueAtTime(130, now + 0.085);
+
+        gain.gain.setValueAtTime(isWuv ? 0.13 : 0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.085);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.09);
+      }
+
+      playEnemyShot() {
+        if (this.muted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(290, now);
+        osc.frequency.exponentialRampToValueAtTime(110, now + 0.11);
+        gain.gain.setValueAtTime(0.05, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      }
+
+      playDoughPickup() {
+        if (this.muted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, now);
+        osc.frequency.setValueAtTime(1320, now + 0.05);
+        gain.gain.setValueAtTime(0.14, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.17);
+      }
+
+      playShred(isLoaf = false) {
+        if (this.muted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const bufferSize = this.ctx.sampleRate * 0.14;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.38));
+        }
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(isLoaf ? 440 : 1300, now);
+
+        const gain = this.ctx.createGain();
+        gain.gain.setValueAtTime(isLoaf ? 0.26 : 0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+        noise.start(now);
+      }
+
+      playSkill(type) {
+        if (this.muted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        if (type === 'PUMA') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(340, now);
+          osc.frequency.exponentialRampToValueAtTime(1380, now + 0.24);
+        } else if (type === 'WUV') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(440, now);
+          osc.frequency.setValueAtTime(660, now + 0.08);
+          osc.frequency.setValueAtTime(990, now + 0.16);
+        } else if (type === 'ULT') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(190, now);
+          osc.frequency.exponentialRampToValueAtTime(36, now + 0.68);
+        }
+
+        gain.gain.setValueAtTime(0.22, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + (type === 'ULT' ? 0.7 : 0.28));
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + (type === 'ULT' ? 0.72 : 0.3));
+      }
+
+      playCelebration() {
+        if (this.muted || !this.ctx) return;
+        const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+        notes.forEach((freq, idx) => {
+          const now = this.ctx.currentTime + idx * 0.09;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now);
+          gain.gain.setValueAtTime(0.16, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.46);
+        });
+      }
+
+      playDamage() {
+        if (this.muted || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(145, now);
+        osc.frequency.linearRampToValueAtTime(50, now + 0.22);
+        gain.gain.setValueAtTime(0.26, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.23);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.24);
+      }
+    }
+
+    const sfx = new SoundEngine();
+
+    // --------------------------------------------------------------------------
+    // 3. CANVAS & GAME STATE ARCHITECTURE
+    // --------------------------------------------------------------------------
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    function resizeCanvas() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    let gameState = 'LOGIN';
+    let previousStateBeforeShop = 'PLAYING';
+
+    const state = {
+      hp: 100,
+      maxHp: 100,
+      score: 0,
+      runDoughEarned: 0,
+      wave: 1,
+      kills: 0,
+      combo: 0,
+      comboTimer: 0,
+      screenShake: 0,
+      gridOffset: 0,
+
+      player: {
+        x: width / 2,
+        y: height * 0.74,
+        targetX: width / 2,
+        targetY: height * 0.74,
+        radius: 19,
+        angle: -Math.PI / 2,
+        fireTimer: 0,
+        invulnTimer: 0,
+        trail: []
+      },
+
+      pointer: {
+        x: width / 2,
+        y: height * 0.3,
+        isDown: false
+      },
+
+      puma: {
+        active: false,
+        duration: 4.5,
+        timer: 0,
+        cooldown: 7.5,
+        cdTimer: 0
+      },
+      wuv: {
+        active: false,
+        duration: 5.0,
+        timer: 0,
+        cooldown: 9.0,
+        cdTimer: 0
+      },
+      ult: {
+        charge: 0,
+        ready: false
+      },
+
+      perpsToSpawn: 0,
+      spawnTimer: 0,
+      droneAngle: 0,
+      droneFireTimer: 0,
+
+      bullets: [],
+      enemyBullets: [],
+      perps: [],
+      doughDrops: [],
+      particles: [],
+      floatingTexts: [],
+      sharks: [],
+      hearts: []
+    };
+
+    const tutorial = { step: 1 };
+
+    function syncProfileToStorage() {
+      if (sessionMode === 'SEBI') {
+        saveData = JSON.parse(JSON.stringify(activeProfile));
+        commitSaveData(saveData);
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // 4. UI INITIALIZATION & LOGIN / DEV HANDLERS
+    // --------------------------------------------------------------------------
+    function refreshLoginPreview() {
+      document.getElementById('loginBestScore').textContent = saveData.bestScore.toLocaleString();
+      document.getElementById('loginDoughPreview').textContent = saveData.bankedDough.toLocaleString();
+    }
+    refreshLoginPreview();
+
+    function populateDevDashboard() {
+      document.getElementById('devPlayCount').textContent = saveData.sebiPlayCount;
+      document.getElementById('devBestScore').textContent = saveData.bestScore.toLocaleString();
+      document.getElementById('devBestWave').textContent = saveData.highestWave;
+      document.getElementById('devTotalKills').textContent = saveData.totalKills.toLocaleString();
+      document.getElementById('devDoughWallet').textContent = `${saveData.bankedDough.toLocaleString()} DOUGH`;
+      const u = saveData.upgrades;
+      document.getElementById('devUpgradeSummary').textContent = `LV ${u.fireRate} / ${u.damage} / ${u.cdr} / ${u.maxHp} / ${u.drone}`;
+
+      const tutEl = document.getElementById('devTutorialStatus');
+      if (saveData.tutorialCompleted) {
+        tutEl.textContent = 'COMPLETED & VERIFIED';
+        tutEl.style.color = '#00ff88';
+      } else {
+        tutEl.textContent = 'NOT YET COMPLETED';
+        tutEl.style.color = '#fcd34d';
+      }
+      document.getElementById('devLastPlayed').textContent = saveData.lastPlayed || 'Never';
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      sfx.init();
+      const pass = document.getElementById('passInput').value.trim();
+      const errEl = document.getElementById('loginError');
+
+      if (pass === '1006') {
+        errEl.classList.add('hidden');
+        sessionMode = 'SEBI';
+        activeProfile = JSON.parse(JSON.stringify(saveData));
+        activeProfile.sebiPlayCount += 1;
+        activeProfile.lastPlayed = new Date().toLocaleString();
+        syncProfileToStorage();
+
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('hudRoleTag').textContent = 'SEBI';
+        document.getElementById('modeBadgeBrief').textContent = 'OPERATIVE: SEBI (RECORDED)';
+
+        if (!activeProfile.tutorialCompleted) {
+          openMissionBriefing();
+        } else {
+          startActualRun(false);
+        }
+      } else if (pass === '8104') {
+        errEl.classList.add('hidden');
+        sessionMode = 'DEV';
+        document.getElementById('loginScreen').classList.add('hidden');
+        populateDevDashboard();
+        document.getElementById('devModal').classList.remove('hidden');
+        gameState = 'DEV_DASH';
+      } else {
+        errEl.classList.remove('hidden');
+        sfx.playDamage();
+        document.getElementById('passInput').value = '';
+      }
+    });
+
+    document.getElementById('devLogoutBtn').addEventListener('click', () => {
+      document.getElementById('devModal').classList.add('hidden');
+      document.getElementById('passInput').value = '';
+      refreshLoginPreview();
+      document.getElementById('loginScreen').classList.remove('hidden');
+      gameState = 'LOGIN';
+    });
+
+    document.getElementById('devResetStatsBtn').addEventListener('click', () => {
+      saveData = getDefaultSaveData();
+      saveData.lastPlayed = 'Reset by Dev';
+      commitSaveData(saveData);
+      populateDevDashboard();
+      sfx.playShred();
+    });
+
+    document.getElementById('devStartTryRunBtn').addEventListener('click', () => {
+      sfx.init();
+      sessionMode = 'DEV';
+      activeProfile = JSON.parse(JSON.stringify(saveData));
+      document.getElementById('devModal').classList.add('hidden');
+      document.getElementById('hudRoleTag').textContent = 'DEV TRY-RUN';
+      document.getElementById('modeBadgeBrief').textContent = 'MODE: DEV TRY-RUN (SANDBOX)';
+      openMissionBriefing();
+    });
+
+    function openMissionBriefing() {
+      gameState = 'BRIEFING';
+      document.getElementById('briefingModal').classList.remove('hidden');
+    }
+
+    document.getElementById('startLiveTutorialBtn').addEventListener('click', () => {
+      sfx.init();
+      document.getElementById('briefingModal').classList.add('hidden');
+      startLiveTutorial();
+    });
+
+    document.getElementById('replayTutBtn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (gameState === 'PLAYING' || gameState === 'TUTORIAL') {
+        startLiveTutorial();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // 5. LIVE INTERACTIVE TUTORIAL & SHARK LOVE CELEBRATION
+    // --------------------------------------------------------------------------
+    function resetRunState() {
+      const bonusMaxHp = (activeProfile.upgrades.maxHp - 1) * 20;
+      state.maxHp = 100 + bonusMaxHp;
+      state.hp = state.maxHp;
+      state.score = 0;
+      state.runDoughEarned = 0;
+      state.wave = 1;
+      state.kills = 0;
+      state.combo = 0;
+      state.comboTimer = 0;
+      state.player.x = width / 2;
+      state.player.y = height * 0.74;
+      state.player.targetX = width / 2;
+      state.player.targetY = height * 0.74;
+      state.player.invulnTimer = 0;
+      state.player.trail = [];
+      state.puma.active = false;
+      state.puma.timer = 0;
+      state.puma.cdTimer = 0;
+      state.wuv.active = false;
+      state.wuv.timer = 0;
+      state.wuv.cdTimer = 0;
+      state.ult.charge = 0;
+      state.ult.ready = false;
+      state.bullets = [];
+      state.enemyBullets = [];
+      state.perps = [];
+      state.doughDrops = [];
+      state.particles = [];
+      state.floatingTexts = [];
+      state.sharks = [];
+      state.hearts = [];
+      updateUltRingUI();
+      updateHud();
+    }
+
+    function clearTutorialHighlights() {
+      document.getElementById('pumaBtn').classList.remove('tutorial-highlight-ring');
+      document.getElementById('wuvBtn').classList.remove('tutorial-highlight-ring');
+      document.getElementById('ultWrapper').classList.remove('tutorial-highlight-ring');
+      document.getElementById('tutPointerPuma').classList.add('hidden');
+      document.getElementById('tutPointerWuv').classList.add('hidden');
+      document.getElementById('tutPointerUlt').classList.add('hidden');
+    }
+
+    function startLiveTutorial() {
+      resetRunState();
+      gameState = 'TUTORIAL';
+      tutorial.step = 1;
+      document.getElementById('gameHud').classList.remove('hidden');
+      document.getElementById('liveTutorialBanner').classList.remove('hidden');
+      setTutorialStep(1);
+    }
+
+    function setTutorialStep(step) {
+      tutorial.step = step;
+      clearTutorialHighlights();
+      const labelEl = document.getElementById('tutStepLabel');
+      const textEl = document.getElementById('tutInstructionText');
+      const arrowEl = document.getElementById('tutPointerArrow');
+
+      if (step === 1) {
+        labelEl.textContent = 'LIVE TRAINING // STEP 1 OF 4';
+        textEl.innerHTML = 'AIM &amp; CLICK / TAP ON THE <span style="color:#fb7185;">ROGUE PERP</span> TO SHRED IT!';
+        arrowEl.textContent = '▼ SHOOT THE GLOWING PAPER VILLAIN ▼';
+        spawnPerp('DRAFT', width / 2, height * 0.28, true);
+      } else if (step === 2) {
+        labelEl.textContent = 'LIVE TRAINING // STEP 2 OF 4';
+        textEl.innerHTML = 'ACTIVATE <span style="color:#00f3ff;">PUMA</span> FOR HYPER-SPEED FIRE &amp; DODGING!';
+        arrowEl.textContent = '▼ CLICK THE GLOWING PUMA BUTTON (OR PRESS Q) ▼';
+        document.getElementById('pumaBtn').classList.add('tutorial-highlight-ring');
+        document.getElementById('tutPointerPuma').classList.remove('hidden');
+        spawnPerp('DRAFT', width * 0.35, height * 0.25, true);
+        spawnPerp('DRAFT', width * 0.65, height * 0.25, true);
+      } else if (step === 3) {
+        labelEl.textContent = 'LIVE TRAINING // STEP 3 OF 4';
+        textEl.innerHTML = 'ACTIVATE <span style="color:#ff007f;">WUV 21</span> TO UNLEASH 2X DOUBLE DAMAGE!';
+        arrowEl.textContent = '▼ CLICK THE GLOWING WUV 21 BUTTON (OR PRESS E) ▼';
+        document.getElementById('wuvBtn').classList.add('tutorial-highlight-ring');
+        document.getElementById('tutPointerWuv').classList.remove('hidden');
+        spawnPerp('GHOST', width / 2, height * 0.26, true);
+      } else if (step === 4) {
+        labelEl.textContent = 'LIVE TRAINING // STEP 4 OF 4';
+        textEl.innerHTML = 'YOUR <span style="color:#ffd700;">ULT RING</span> IS 100% READY! UNLEASH ANNIHILATION!';
+        arrowEl.textContent = '▼ HIT THE GOLDEN ULT CORE (OR PRESS SPACE) ▼';
+        state.ult.charge = 100;
+        state.ult.ready = true;
+        updateUltRingUI();
+        document.getElementById('ultWrapper').classList.add('tutorial-highlight-ring');
+        document.getElementById('tutPointerUlt').classList.remove('hidden');
+        for (let i = 0; i < 5; i++) {
+          spawnPerp('DRAFT', width * (0.2 + i * 0.15), height * 0.25, true);
+        }
+      }
+    }
+
+    function triggerTutorialCelebration() {
+      clearTutorialHighlights();
+      document.getElementById('liveTutorialBanner').classList.add('hidden');
+      gameState = 'CELEBRATION';
+      sfx.playCelebration();
+
+      if (!activeProfile.starterGiftClaimed) {
+        activeProfile.bankedDough += 25;
+        activeProfile.starterGiftClaimed = true;
+      }
+      activeProfile.tutorialCompleted = true;
+      syncProfileToStorage();
+
+      for (let i = 0; i < 9; i++) {
+        state.sharks.push({
+          x: i % 2 === 0 ? -80 - i * 60 : width + 80 + i * 60,
+          y: height * (0.16 + (i % 5) * 0.14),
+          vx: i % 2 === 0 ? 250 + Math.random() * 95 : -(250 + Math.random() * 95),
+          size: 36 + Math.random() * 14,
+          wavePhase: Math.random() * Math.PI * 2
+        });
+      }
+      for (let i = 0; i < 48; i++) {
+        state.hearts.push({
+          x: Math.random() * width,
+          y: height + Math.random() * 200,
+          vy: -(95 + Math.random() * 140),
+          vx: (Math.random() - 0.5) * 60,
+          size: 11 + Math.random() * 14,
+          color: Math.random() > 0.4 ? '#ff007f' : '#ff66b2'
+        });
+      }
+
+      document.getElementById('celebrationModal').classList.remove('hidden');
+    }
+
+    document.getElementById('claimGiftStartBtn').addEventListener('click', () => {
+      sfx.init();
+      sfx.playSkill('WUV');
+      document.getElementById('celebrationModal').classList.add('hidden');
+      startActualRun(true);
+    });
+
+    function startActualRun(withUltBoost = false) {
+      resetRunState();
+      if (withUltBoost) {
+        state.ult.charge = 100;
+        state.ult.ready = true;
+        updateUltRingUI();
+        addFloatingText(width / 2, height * 0.45, '+25 DOUGH BANKED // ULT READY!', '#ffd700', 16);
+      }
+      gameState = 'PLAYING';
+      document.getElementById('gameHud').classList.remove('hidden');
+      startWave(1);
+      updateHud();
+    }
+
+    // --------------------------------------------------------------------------
+    // 6. ABILITIES: PUMA, WUV 21, AND ULT RING
+    // --------------------------------------------------------------------------
+    function activatePuma() {
+      if (gameState !== 'PLAYING' && gameState !== 'TUTORIAL') return;
+      if (state.puma.active || state.puma.cdTimer > 0) return;
+
+      sfx.playSkill('PUMA');
+      state.puma.active = true;
+      state.puma.timer = state.puma.duration;
+      const cdrMult = Math.max(0.5, 1 - (activeProfile.upgrades.cdr - 1) * 0.07);
+      state.puma.cdTimer = state.puma.cooldown * cdrMult;
+      state.screenShake = 6;
+      addFloatingText(state.player.x, state.player.y - 34, 'PUMA OVERCLOCK!', '#00f3ff', 15);
+
+      if (gameState === 'TUTORIAL' && tutorial.step === 2) {
+        setTimeout(() => {
+          if (gameState === 'TUTORIAL' && tutorial.step === 2) setTutorialStep(3);
+        }, 1100);
+      }
+    }
+
+    function activateWuv() {
+      if (gameState !== 'PLAYING' && gameState !== 'TUTORIAL') return;
+      if (state.wuv.active || state.wuv.cdTimer > 0) return;
+
+      sfx.playSkill('WUV');
+      state.wuv.active = true;
+      state.wuv.timer = state.wuv.duration;
+      const cdrMult = Math.max(0.5, 1 - (activeProfile.upgrades.cdr - 1) * 0.07);
+      state.wuv.cdTimer = state.wuv.cooldown * cdrMult;
+      state.screenShake = 8;
+      addFloatingText(state.player.x, state.player.y - 48, 'WUV 21 // 2X DMG!', '#ff007f', 16);
+
+      if (gameState === 'TUTORIAL' && tutorial.step === 3) {
+        setTimeout(() => {
+          if (gameState === 'TUTORIAL' && tutorial.step === 3) setTutorialStep(4);
+        }, 1100);
+      }
+    }
+
+    function activateUlt() {
+      if (gameState !== 'PLAYING' && gameState !== 'TUTORIAL') return;
+      if (!state.ult.ready && state.ult.charge < 100) return;
+
+      sfx.playSkill('ULT');
+      state.ult.charge = 0;
+      state.ult.ready = false;
+      updateUltRingUI();
+      state.screenShake = 24;
+      state.enemyBullets = []; // Clears hostile projectiles too!
+
+      addFloatingText(width / 2, height * 0.42, 'APEX SHARK ANNIHILATION!', '#ffd700', 21);
+
+      for (let i = 0; i < 5; i++) {
+        state.sharks.push({
+          x: -100 - i * 85,
+          y: height * (0.2 + i * 0.15),
+          vx: 800,
+          size: 46,
+          wavePhase: i
+        });
+      }
+
+      for (let i = state.perps.length - 1; i >= 0; i--) {
+        const p = state.perps[i];
+        spawnExplosion(p.x, p.y, '#ffd700', 18);
+        damagePerp(p, 99999, true);
+      }
+
+      if (gameState === 'TUTORIAL' && tutorial.step === 4) {
+        setTimeout(() => {
+          triggerTutorialCelebration();
+        }, 900);
+      }
+    }
+
+    document.getElementById('pumaBtn').addEventListener('click', (e) => { e.stopPropagation(); activatePuma(); });
+    document.getElementById('wuvBtn').addEventListener('click', (e) => { e.stopPropagation(); activateWuv(); });
+    document.getElementById('ultBtn').addEventListener('click', (e) => { e.stopPropagation(); activateUlt(); });
+    document.getElementById('muteToggleBtn').addEventListener('click', (e) => { e.stopPropagation(); sfx.toggleMute(); });
+
+    const keysDown = {};
+    window.addEventListener('keydown', (e) => {
+      keysDown[e.code] = true;
+      if (e.code === 'KeyQ' || e.code === 'Digit1') activatePuma();
+      if (e.code === 'KeyE' || e.code === 'Digit2') activateWuv();
+      if (e.code === 'Space' || e.code === 'KeyR') {
+        if (gameState === 'PLAYING' || gameState === 'TUTORIAL') {
+          e.preventDefault();
+          activateUlt();
+        }
+      }
+    });
+    window.addEventListener('keyup', (e) => { keysDown[e.code] = false; });
+
+    // --------------------------------------------------------------------------
+    // 7. HARDCORE WAVE SYSTEM, ESCALATING PERPS & SCARCE DOUGH SHARDS
+    // --------------------------------------------------------------------------
+    function startWave(waveNum) {
+      state.wave = waveNum;
+      // Intense scaling: Wave 1 starts with 11 aggressive Perps and climbs steeply
+      state.perpsToSpawn = 8 + waveNum * 5;
+      state.spawnTimer = 0.35;
+      addFloatingText(width / 2, height * 0.34, `WAVE ${waveNum} // THREAT ESCALATION`, '#ff2a4b', 19);
+      updateHud();
+    }
+
+    function spawnPerp(forcedType = null, forcedX = null, forcedY = null, isTutorialTarget = false) {
+      let type = forcedType;
+      if (!type) {
+        const roll = Math.random();
+        if (state.wave >= 2 && roll < Math.min(0.22, 0.08 + state.wave * 0.02)) {
+          type = 'LOAF';
+        } else if (state.wave >= 3 && roll < Math.min(0.46, 0.16 + state.wave * 0.04)) {
+          type = 'TITAN';
+        } else if (state.wave >= 2 && roll < 0.65) {
+          type = 'ENFORCER';
+        } else if (roll < 0.52 + state.wave * 0.04) {
+          type = 'GHOST';
+        } else {
+          type = 'DRAFT';
+        }
+      }
+
+      const margin = 46;
+      const x = forcedX !== null ? forcedX : margin + Math.random() * (width - margin * 2);
+      const y = forcedY !== null ? forcedY : -45;
+
+      // Hardcore steep scaling per wave
+      const waveSpeedMult = 1 + (state.wave - 1) * 0.17;
+      const waveHpMult = 1 + (state.wave - 1) * 0.36;
+
+      let hp = 36 * waveHpMult;
+      let speed = (150 + Math.random() * 55) * waveSpeedMult;
+      let radius = 23;
+      let scoreVal = 150;
+      let fireRate = Math.max(1.2, 2.9 - state.wave * 0.14); // Fires red-ink citations!
+
+      if (type === 'GHOST') {
+        hp = 54 * waveHpMult;
+        speed = (205 + Math.random() * 65) * waveSpeedMult;
+        radius = 24;
+        scoreVal = 260;
+        fireRate = Math.max(1.0, 2.3 - state.wave * 0.12);
+      } else if (type === 'ENFORCER') {
+        hp = 92 * waveHpMult;
+        speed = (165 + Math.random() * 45) * waveSpeedMult;
+        radius = 27;
+        scoreVal = 400;
+        fireRate = Math.max(0.95, 2.0 - state.wave * 0.11);
+      } else if (type === 'LOAF') {
+        hp = 135 * waveHpMult;
+        speed = (180 + Math.random() * 50) * waveSpeedMult;
+        radius = 31;
+        scoreVal = 750;
+        fireRate = 1.65;
+      } else if (type === 'TITAN') {
+        hp = 210 * waveHpMult;
+        speed = (120 + Math.random() * 35) * waveSpeedMult;
+        radius = 33;
+        scoreVal = 950;
+        fireRate = Math.max(0.85, 1.85 - state.wave * 0.1);
+      }
+
+      if (isTutorialTarget) {
+        hp = 22;
+        speed = 20;
+        fireRate = 999;
+      }
+
+      state.perps.push({
+        type,
+        x,
+        y,
+        hp,
+        maxHp: hp,
+        speed,
+        radius,
+        scoreVal,
+        fireTimer: 0.7 + Math.random() * fireRate,
+        fireInterval: fireRate,
+        wobblePhase: Math.random() * Math.PI * 2,
+        wobbleFreq: type === 'GHOST' ? 6.2 : 3.2,
+        wobbleAmp: type === 'GHOST' ? 165 : (type === 'LOAF' ? 125 : 75),
+        hitFlash: 0,
+        isTutorialTarget
+      });
+    }
+
+    function spawnDoughShard(x, y, amount) {
+      state.doughDrops.push({
+        x,
+        y,
+        vx: (Math.random() - 0.5) * 90,
+        vy: -70 - Math.random() * 50,
+        amount,
+        life: 9.0
+      });
+    }
+
+    function firePlayerWeapon() {
+      const fireLv = activeProfile.upgrades.fireRate;
+      const baseCooldown = 0.24 / (1 + (fireLv - 1) * 0.16);
+      const effectiveCooldown = state.puma.active ? baseCooldown * 0.48 : baseCooldown;
+
+      if (state.player.fireTimer > 0) return;
+      state.player.fireTimer = effectiveCooldown;
+
+      const dx = state.pointer.x - state.player.x;
+      const dy = state.pointer.y - state.player.y;
+      const angle = Math.atan2(dy, dx);
+      state.player.angle = angle;
+
+      const dmgLv = activeProfile.upgrades.damage;
+      const critChance = activeProfile.upgrades.crit * 0.05; // +5% crit per level
+      const isCrit = Math.random() < critChance;
+
+      let baseDmg = 15 + (dmgLv - 1) * 8;
+      if (isCrit) baseDmg *= 1.85;
+      const finalDmg = state.wuv.active ? baseDmg * 2 : baseDmg;
+      const speed = state.puma.active ? 1020 : 820;
+
+      // Main Plasma Bolt
+      state.bullets.push({
+        x: state.player.x + Math.cos(angle) * 22,
+        y: state.player.y + Math.sin(angle) * 22,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        dmg: finalDmg,
+        isWuv: state.wuv.active,
+        isCrit,
+        radius: state.wuv.active ? 7 : 5
+      });
+
+      // Evolution Milestone 1: Fire Core Lv.3+ unlocks Twin Side Rails
+      if (fireLv >= 3 || state.puma.active) {
+        const spread = 0.11;
+        [-spread, spread].forEach((offset) => {
+          const a = angle + offset;
+          state.bullets.push({
+            x: state.player.x + Math.cos(a) * 20,
+            y: state.player.y + Math.sin(a) * 20,
+            vx: Math.cos(a) * speed,
+            vy: Math.sin(a) * speed,
+            dmg: finalDmg * 0.65,
+            isWuv: state.wuv.active,
+            isCrit,
+            radius: 4.5
+          });
+        });
+      }
+
+      // Evolution Milestone 2: Fire Core Lv.7+ unlocks Penta-Helix Barrage
+      if (fireLv >= 7) {
+        [-0.22, 0.22].forEach((offset) => {
+          const a = angle + offset;
+          state.bullets.push({
+            x: state.player.x + Math.cos(a) * 18,
+            y: state.player.y + Math.sin(a) * 18,
+            vx: Math.cos(a) * speed,
+            vy: Math.sin(a) * speed,
+            dmg: finalDmg * 0.5,
+            isWuv: state.wuv.active,
+            isCrit,
+            radius: 4
+          });
+        });
+      }
+
+      sfx.playShoot(state.wuv.active, state.puma.active);
+    }
+
+    function takePlayerDamage(amount, sourceLabel = 'HIT!') {
+      if (state.player.invulnTimer > 0) return;
+      state.hp -= amount;
+      state.player.invulnTimer = 0.45;
+      state.combo = 0;
+      state.screenShake = 18;
+      sfx.playDamage();
+
+      const overlay = document.getElementById('damageOverlay');
+      overlay.classList.remove('damage-vignette');
+      void overlay.offsetWidth;
+      overlay.classList.add('damage-vignette');
+
+      addFloatingText(state.player.x, state.player.y - 30, `${sourceLabel} -${amount} HP`, '#ff2a4b', 16);
+      updateHud();
+
+      if (state.hp <= 0) {
+        triggerGameOver();
+      }
+    }
+
+    function damagePerp(perp, amount, fromUlt = false, isCrit = false) {
+      perp.hp -= amount;
+      perp.hitFlash = 0.1;
+
+      if (!fromUlt) {
+        const dmgColor = isCrit ? '#ffd700' : (state.wuv.active ? '#ff007f' : '#00f3ff');
+        addFloatingText(
+          perp.x + (Math.random() - 0.5) * 22,
+          perp.y - 16,
+          `${isCrit ? 'CRIT! ' : ''}-${Math.round(amount)}`,
+          dmgColor,
+          isCrit || state.wuv.active ? 14 : 11
+        );
+      }
+
+      if (perp.hp <= 0) {
+        const idx = state.perps.indexOf(perp);
+        if (idx !== -1) state.perps.splice(idx, 1);
+
+        sfx.playShred(perp.type === 'LOAF');
+        state.kills += 1;
+        state.combo += 1;
+        state.comboTimer = 2.2;
+
+        const comboMult = 1 + Math.min(2.5, Math.floor(state.combo / 5) * 0.25);
+        state.score += Math.round(perp.scoreVal * comboMult);
+        state.screenShake = Math.max(state.screenShake, perp.type === 'LOAF' ? 14 : 6);
+
+        if (!fromUlt) {
+          // Harder ULT charge rate (requires real slaying streak)
+          state.ult.charge = Math.min(100, state.ult.charge + (perp.type === 'LOAF' ? 15 : 6.5));
+          if (state.ult.charge >= 100 && !state.ult.ready) {
+            state.ult.ready = true;
+            addFloatingText(state.player.x, state.player.y - 55, 'ULT OK TO USE!', '#ffd700', 16);
+          }
+          updateUltRingUI();
+        }
+
+        // SCARCE DOUGH ECONOMY:
+        // Regular Perps only have a 20% chance to drop 1-2 Dough shards.
+        // Evil Loafs always drop 3-5 rare Dough shards!
+        if (!perp.isTutorialTarget) {
+          if (perp.type === 'LOAF') {
+            const loafDough = 3 + Math.floor(Math.random() * 3); // 3-5 Dough
+            spawnDoughShard(perp.x, perp.y, loafDough);
+            spawnExplosion(perp.x, perp.y, '#ffd700', 28);
+            addFloatingText(perp.x, perp.y - 26, 'CRUMB BURST! RARE DOUGH!', '#ffd700', 15);
+          } else {
+            spawnExplosion(perp.x, perp.y, '#ff2a4b', 15);
+            if (Math.random() < 0.20) {
+              const shardVal = Math.random() < 0.25 ? 2 : 1;
+              spawnDoughShard(perp.x, perp.y, shardVal);
+            }
+            if (state.combo > 0 && state.combo % 8 === 0) {
+              const callouts = ['DAILY GRIND!', 'TOASTED!', 'SHREDDED!', 'NO MERCY!'];
+              addFloatingText(perp.x, perp.y - 28, callouts[Math.floor(Math.random() * callouts.length)], '#ff66b2', 14);
+            }
+          }
+        } else {
+          spawnExplosion(perp.x, perp.y, '#00f3ff', 18);
+        }
+
+        activeProfile.totalKills += 1;
+        if (state.score > activeProfile.bestScore) activeProfile.bestScore = state.score;
+        if (state.wave > activeProfile.highestWave) activeProfile.highestWave = state.wave;
+        syncProfileToStorage();
+
+        if (gameState === 'TUTORIAL' && tutorial.step === 1 && perp.isTutorialTarget) {
+          setTutorialStep(2);
+        }
+
+        updateHud();
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // 8. EXPANDED 10-TIER ARMORY & PRESTIGE EVOLUTION TREE
+    // --------------------------------------------------------------------------
+    const UPGRADE_CATALOG = [
+      {
+        id: 'fireRate',
+        name: 'PLASMA RAIL CORE',
+        desc: 'Boosts fire rate. Lv.3 unlocks Twin Side Rails; Lv.7 unlocks Penta-Helix!',
+        costs: [30, 75, 160, 340, 700, 1400, 2800, 5200, 9500],
+        maxLv: 10
+      },
+      {
+        id: 'damage',
+        name: 'THESIS SHREDDER EDGE',
+        desc: 'Increases base projectile damage against armored Perps & Titans.',
+        costs: [35, 85, 180, 380, 780, 1550, 3100, 5800, 10500],
+        maxLv: 10
+      },
+      {
+        id: 'cdr',
+        name: 'PUMA / WUV OVERCLOCK',
+        desc: 'Reduces cooldowns on PUMA speed dash and WUV 21 double damage.',
+        costs: [45, 110, 240, 520, 1100, 2300, 4600],
+        maxLv: 8
+      },
+      {
+        id: 'maxHp',
+        name: 'INTEGRITY AEGIS SHIELD',
+        desc: 'Permanently adds +20 Max Shield HP and restores +35 HP immediately.',
+        costs: [30, 70, 150, 320, 660, 1300, 2600, 4900, 8800],
+        maxLv: 10
+      },
+      {
+        id: 'drone',
+        name: 'CYBER-SHARK DRONES',
+        desc: 'Deploys autonomous orbital Shark Drones that auto-hunt nearby Perps.',
+        costs: [90, 260, 680, 1650, 3900],
+        maxLv: 5
+      },
+      {
+        id: 'crit',
+        name: 'CRIT OVERLOAD MATRIX',
+        desc: 'Adds +5% Critical Strike chance per tier (185% golden burst damage).',
+        costs: [50, 125, 280, 600, 1250, 2500, 5000],
+        maxLv: 8
+      }
+    ];
+
+    function getChassisTitle() {
+      const fireLv = activeProfile.upgrades.fireRate;
+      const dmgLv = activeProfile.upgrades.damage;
+      if (fireLv >= 7 && dmgLv >= 7) return 'MK-IV APEX LEVIATHAN';
+      if (fireLv >= 5 || dmgLv >= 5) return 'MK-III CRIMSON VANGUARD';
+      if (fireLv >= 3) return 'MK-II TWIN-RAIL INTERCEPTOR';
+      return 'MK-I PULSE BLASTER';
+    }
+
+    function renderUpgradeShop() {
+      document.getElementById('shopCreditsDisplay').textContent = activeProfile.bankedDough.toLocaleString();
+      document.getElementById('currentChassisName').textContent = getChassisTitle();
+
+      const fireLv = activeProfile.upgrades.fireRate;
+      const hintEl = document.getElementById('nextMilestoneHint');
+      if (fireLv < 3) hintEl.textContent = 'Next Evolution: Plasma Rail Lv.3 (Twin Rails)';
+      else if (fireLv < 7) hintEl.textContent = 'Next Evolution: Plasma Rail Lv.7 (Penta-Helix)';
+      else hintEl.textContent = 'APEX CHASSIS EVOLVED!';
+
+      const container = document.getElementById('upgradeList');
+      container.innerHTML = '';
+
+      UPGRADE_CATALOG.forEach((item) => {
+        const lv = activeProfile.upgrades[item.id];
+        const isMax = lv >= item.maxLv;
+        const costIdx = item.id === 'drone' || item.id === 'crit' ? lv : lv - 1;
+        const cost = isMax ? 0 : item.costs[Math.min(item.costs.length - 1, costIdx)];
+        const canAfford = !isMax && activeProfile.bankedDough >= cost;
+
+        const card = document.createElement('div');
+        card.style.cssText = 'padding: 12px; border-radius: 12px; background: #05050c; border: 1px solid #1e293b; display: flex; flex-direction: column; justify-content: space-between; gap: 10px;';
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between" style="gap: 6px;">
+              <span class="font-orbitron" style="font-weight: bold; font-size: 11px; color: #38bdf8;">${item.name}</span>
+              <span style="font-size: 10px; font-weight: bold; padding: 2px 7px; border-radius: 5px; background: #0f172a; color: #ffd700;">LV ${lv}/${item.maxLv}</span>
+            </div>
+            <p style="font-size: 11px; color: #94a3b8; margin: 6px 0 0 0; line-height: 1.4;">${item.desc}</p>
+          </div>
+          <button
+            data-upg="${item.id}"
+            ${!canAfford ? 'disabled' : ''}
+            class="font-orbitron"
+            style="width: 100%; padding: 8px 10px; border-radius: 8px; font-weight: bold; font-size: 10px; text-transform: uppercase; cursor: ${canAfford ? 'pointer' : 'not-allowed'}; border: ${
+              isMax
+                ? '1px solid rgba(0,255,136,0.4)'
+                : canAfford
+                ? 'none'
+                : '1px solid #1e293b'
+            }; background: ${
+              isMax
+                ? 'rgba(6,78,59,0.5)'
+                : canAfford
+                ? '#ffd700'
+                : '#0f172a'
+            }; color: ${
+              isMax
+                ? '#34d399'
+                : canAfford
+                ? '#020617'
+                : '#64748b'
+            };"
+          >
+            ${isMax ? 'MAX TIER UNLOCKED' : `EVOLVE // ${cost.toLocaleString()} DOUGH`}
+          </button>
+        `;
+        container.appendChild(card);
+      });
+
+      container.querySelectorAll('button[data-upg]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-upg');
+          const item = UPGRADE_CATALOG.find((u) => u.id === id);
+          const lv = activeProfile.upgrades[id];
+          const costIdx = id === 'drone' || id === 'crit' ? lv : lv - 1;
+          const cost = item.costs[Math.min(item.costs.length - 1, costIdx)];
+
+          if (lv < item.maxLv && activeProfile.bankedDough >= cost) {
+            activeProfile.bankedDough -= cost;
+            activeProfile.upgrades[id] += 1;
+
+            if (id === 'maxHp') {
+              state.maxHp += 20;
+              state.hp = Math.min(state.maxHp, state.hp + 35);
+            }
+
+            syncProfileToStorage();
+            sfx.playSkill('WUV');
+            updateHud();
+            renderUpgradeShop();
+          }
+        });
+      });
+    }
+
+    document.getElementById('openShopBtn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (gameState !== 'PLAYING' && gameState !== 'GAMEOVER') return;
+      previousStateBeforeShop = gameState;
+      gameState = 'SHOP';
+      document.getElementById('gameOverModal').classList.add('hidden');
+      renderUpgradeShop();
+      document.getElementById('upgradeModal').classList.remove('hidden');
+    });
+
+    document.getElementById('gameOverArmoryBtn').addEventListener('click', () => {
+      previousStateBeforeShop = 'GAMEOVER';
+      gameState = 'SHOP';
+      document.getElementById('gameOverModal').classList.add('hidden');
+      renderUpgradeShop();
+      document.getElementById('upgradeModal').classList.remove('hidden');
+    });
+
+    document.getElementById('closeShopBtn').addEventListener('click', () => {
+      document.getElementById('upgradeModal').classList.add('hidden');
+      if (previousStateBeforeShop === 'GAMEOVER') {
+        gameState = 'GAMEOVER';
+        document.getElementById('gameOverModal').classList.remove('hidden');
+      } else {
+        gameState = 'PLAYING';
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // 9. POINTER & TOUCH CONTROLS
+    // --------------------------------------------------------------------------
+    function handlePointerMove(clientX, clientY) {
+      state.pointer.x = clientX;
+      state.pointer.y = clientY;
+      state.player.targetX = Math.max(26, Math.min(width - 26, clientX));
+      state.player.targetY = Math.max(height * 0.42, Math.min(height - 95, clientY + 80));
+    }
+
+    canvas.addEventListener('mousedown', (e) => {
+      sfx.init();
+      state.pointer.isDown = true;
+      handlePointerMove(e.clientX, e.clientY);
+      if (gameState === 'PLAYING' || gameState === 'TUTORIAL') firePlayerWeapon();
+    });
+
+    window.addEventListener('mousemove', (e) => handlePointerMove(e.clientX, e.clientY));
+    window.addEventListener('mouseup', () => { state.pointer.isDown = false; });
+
+    canvas.addEventListener('touchstart', (e) => {
+      sfx.init();
+      if (e.touches.length > 0) {
+        const t = e.touches[0];
+        state.pointer.isDown = true;
+        handlePointerMove(t.clientX, t.clientY);
+        if (gameState === 'PLAYING' || gameState === 'TUTORIAL') firePlayerWeapon();
+      }
+    }, { passive: true });
+
+    canvas.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        const t = e.touches[0];
+        handlePointerMove(t.clientX, t.clientY);
+      }
+    }, { passive: true });
+
+    canvas.addEventListener('touchend', () => { state.pointer.isDown = false; });
+
+    // --------------------------------------------------------------------------
+    // 10. VISUAL PARTICLES, FLOATING TEXT & HUD
+    // --------------------------------------------------------------------------
+    function spawnExplosion(x, y, color, count = 14) {
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 75 + Math.random() * 270;
+        state.particles.push({
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 0.35 + Math.random() * 0.35,
+          maxLife: 0.7,
+          size: 2.5 + Math.random() * 4,
+          color
+        });
+      }
+    }
+
+    function addFloatingText(x, y, text, color = '#ffffff', size = 14) {
+      state.floatingTexts.push({ x, y, text, color, size, life: 0.95 });
+    }
+
+    function updateUltRingUI() {
+      const ring = document.getElementById('ultProgressRing');
+      const pctText = document.getElementById('ultPctText');
+      const ultBtn = document.getElementById('ultBtn');
+      const ultWrapper = document.getElementById('ultWrapper');
+
+      const circumference = 276.46;
+      const pct = Math.min(100, Math.max(0, state.ult.charge));
+      const offset = circumference - (pct / 100) * circumference;
+
+      ring.style.strokeDashoffset = offset;
+
+      if (pct >= 100) {
+        ultBtn.disabled = false;
+        ultWrapper.classList.add('ult-ready');
+        ring.setAttribute('stroke', '#00f3ff');
+        pctText.textContent = 'OK TO USE!';
+        pctText.style.color = '#00f3ff';
+      } else {
+        ultBtn.disabled = true;
+        ultWrapper.classList.remove('ult-ready');
+        ring.setAttribute('stroke', '#ffd700');
+        pctText.textContent = `${Math.floor(pct)}%`;
+        pctText.style.color = '#fef08a';
+      }
+    }
+
+    function updateHud() {
+      const hpPct = Math.max(0, (state.hp / state.maxHp) * 100);
+      document.getElementById('hpBar').style.width = `${hpPct}%`;
+      document.getElementById('hpText').textContent = `${Math.max(0, Math.ceil(state.hp))} / ${state.maxHp}`;
+      document.getElementById('scoreText').textContent = state.score.toLocaleString();
+      document.getElementById('bestScoreHud').textContent = Math.max(state.score, activeProfile.bestScore).toLocaleString();
+      document.getElementById('waveText').textContent = state.wave;
+      document.getElementById('perpsLeftText').textContent = state.perpsToSpawn + state.perps.length;
+      document.getElementById('creditsText').textContent = activeProfile.bankedDough.toLocaleString();
+
+      const comboEl = document.getElementById('comboBadge');
+      if (state.combo >= 3) {
+        comboEl.classList.remove('hidden');
+        comboEl.textContent = `${state.combo}X STREAK!`;
+      } else {
+        comboEl.classList.add('hidden');
+      }
+    }
+
+    function triggerGameOver() {
+      gameState = 'GAMEOVER';
+      sfx.playDamage();
+
+      if (state.score > activeProfile.bestScore) activeProfile.bestScore = state.score;
+      if (state.wave > activeProfile.highestWave) activeProfile.highestWave = state.wave;
+      syncProfileToStorage();
+
+      document.getElementById('finalScoreText').textContent = state.score.toLocaleString();
+      document.getElementById('finalBestScoreText').textContent = activeProfile.bestScore.toLocaleString();
+      document.getElementById('finalWaveText').textContent = state.wave;
+      document.getElementById('finalDoughRunText').textContent = `+${state.runDoughEarned}`;
+      document.getElementById('gameOverModal').classList.remove('hidden');
+    }
+
+    document.getElementById('playAgainBtn').addEventListener('click', () => {
+      document.getElementById('gameOverModal').classList.add('hidden');
+      if (sessionMode === 'SEBI') {
+        activeProfile.sebiPlayCount += 1;
+        activeProfile.lastPlayed = new Date().toLocaleString();
+        syncProfileToStorage();
+      }
+      startActualRun(false);
+    });
+
+    document.getElementById('backToLoginBtn').addEventListener('click', () => {
+      document.getElementById('gameOverModal').classList.add('hidden');
+      document.getElementById('gameHud').classList.add('hidden');
+      document.getElementById('passInput').value = '';
+      refreshLoginPreview();
+      document.getElementById('loginScreen').classList.remove('hidden');
+      gameState = 'LOGIN';
+    });
+
+    // --------------------------------------------------------------------------
+    // 11. MAIN SIMULATION & HARDCORE COMBAT LOOP
+    // --------------------------------------------------------------------------
+    let lastTime = performance.now();
+
+    function update(dt) {
+      state.gridOffset = (state.gridOffset + dt * (state.puma.active ? 210 : 85)) % 48;
+
+      if (state.screenShake > 0) state.screenShake = Math.max(0, state.screenShake - dt * 45);
+      if (state.player.invulnTimer > 0) state.player.invulnTimer = Math.max(0, state.player.invulnTimer - dt);
+
+      if (gameState === 'CELEBRATION' || state.sharks.length > 0) {
+        for (let i = state.sharks.length - 1; i >= 0; i--) {
+          const s = state.sharks[i];
+          s.x += s.vx * dt;
+          s.wavePhase += dt * 6;
+          if (gameState === 'CELEBRATION') {
+            if (s.vx > 0 && s.x > width + 120) s.x = -120;
+            if (s.vx < 0 && s.x < -120) s.x = width + 120;
+          } else if (s.x > width + 150) {
+            state.sharks.splice(i, 1);
+          }
+        }
+        for (let i = state.hearts.length - 1; i >= 0; i--) {
+          const h = state.hearts[i];
+          h.y += h.vy * dt;
+          h.x += Math.sin(h.y * 0.03) * 35 * dt;
+          if (h.y < -40) h.y = height + 30;
+        }
+      }
+
+      if (gameState !== 'PLAYING' && gameState !== 'TUTORIAL') return;
+
+      const moveSpeed = state.puma.active ? 580 : 360;
+      if (keysDown['ArrowLeft'] || keysDown['KeyA']) state.player.targetX -= moveSpeed * dt;
+      if (keysDown['ArrowRight'] || keysDown['KeyD']) state.player.targetX += moveSpeed * dt;
+      if (keysDown['ArrowUp'] || keysDown['KeyW']) state.player.targetY -= moveSpeed * dt;
+      if (keysDown['ArrowDown'] || keysDown['KeyS']) state.player.targetY += moveSpeed * dt;
+
+      state.player.targetX = Math.max(24, Math.min(width - 24, state.player.targetX));
+      state.player.targetY = Math.max(height * 0.38, Math.min(height - 92, state.player.targetY));
+
+      const lerpFactor = state.puma.active ? 20 : 12;
+      state.player.x += (state.player.targetX - state.player.x) * Math.min(1, lerpFactor * dt);
+      state.player.y += (state.player.targetY - state.player.y) * Math.min(1, lerpFactor * dt);
+
+      if (state.puma.active) {
+        state.player.trail.push({ x: state.player.x, y: state.player.y, life: 0.25 });
+      }
+      for (let i = state.player.trail.length - 1; i >= 0; i--) {
+        state.player.trail[i].life -= dt;
+        if (state.player.trail[i].life <= 0) state.player.trail.splice(i, 1);
+      }
+
+      if (state.player.fireTimer > 0) state.player.fireTimer -= dt;
+      if (state.pointer.isDown) firePlayerWeapon();
+
+      // Orbital Cyber-Shark Drones (1 to 5 drones)
+      const droneCount = activeProfile.upgrades.drone;
+      if (droneCount > 0 && state.perps.length > 0) {
+        state.droneAngle += dt * 3.8;
+        state.droneFireTimer -= dt;
+        if (state.droneFireTimer <= 0) {
+          state.droneFireTimer = Math.max(0.25, 0.72 - droneCount * 0.08);
+          for (let d = 0; d < droneCount; d++) {
+            const angOffset = state.droneAngle + (d * Math.PI * 2) / droneCount;
+            const dx = state.player.x + Math.cos(angOffset) * 46;
+            const dy = state.player.y + Math.sin(angOffset) * 46;
+            const target = state.perps[d % state.perps.length];
+            const shotAng = Math.atan2(target.y - dy, target.x - dx);
+            state.bullets.push({
+              x: dx,
+              y: dy,
+              vx: Math.cos(shotAng) * 800,
+              vy: Math.sin(shotAng) * 800,
+              dmg: 14 + activeProfile.upgrades.damage * 4,
+              isWuv: false,
+              isCrit: false,
+              radius: 4
+            });
+          }
+        }
+      }
+
+      // Cooldowns
+      if (state.puma.active) {
+        state.puma.timer -= dt;
+        if (state.puma.timer <= 0) state.puma.active = false;
+      }
+      if (state.puma.cdTimer > 0) {
+        state.puma.cdTimer = Math.max(0, state.puma.cdTimer - dt);
+        document.getElementById('pumaCdOverlay').style.transform = `scaleY(${state.puma.cdTimer / state.puma.cooldown})`;
+        document.getElementById('pumaStatusText').textContent = state.puma.cdTimer > 0 ? `${state.puma.cdTimer.toFixed(1)}S` : 'SPEED [Q]';
+      } else {
+        document.getElementById('pumaCdOverlay').style.transform = 'scaleY(0)';
+        document.getElementById('pumaStatusText').textContent = state.puma.active ? 'ACTIVE!' : 'SPEED [Q]';
+      }
+
+      if (state.wuv.active) {
+        state.wuv.timer -= dt;
+        if (state.wuv.timer <= 0) state.wuv.active = false;
+      }
+      if (state.wuv.cdTimer > 0) {
+        state.wuv.cdTimer = Math.max(0, state.wuv.cdTimer - dt);
+        document.getElementById('wuvCdOverlay').style.transform = `scaleY(${state.wuv.cdTimer / state.wuv.cooldown})`;
+        document.getElementById('wuvStatusText').textContent = state.wuv.cdTimer > 0 ? `${state.wuv.cdTimer.toFixed(1)}S` : '2X DMG [E]';
+      } else {
+        document.getElementById('wuvCdOverlay').style.transform = 'scaleY(0)';
+        document.getElementById('wuvStatusText').textContent = state.wuv.active ? '2X ACTIVE!' : '2X DMG [E]';
+      }
+
+      if (state.combo > 0) {
+        state.comboTimer -= dt;
+        if (state.comboTimer <= 0) {
+          state.combo = 0;
+          updateHud();
+        }
+      }
+
+      // Wave Spawner (Fast, intense spawn cadence)
+      if (gameState === 'PLAYING') {
+        if (state.perpsToSpawn > 0) {
+          state.spawnTimer -= dt;
+          if (state.spawnTimer <= 0) {
+            spawnPerp();
+            state.perpsToSpawn -= 1;
+            state.spawnTimer = Math.max(0.24, 0.92 - state.wave * 0.08);
+            updateHud();
+          }
+        } else if (state.perps.length === 0) {
+          const nextWave = state.wave + 1;
+          // Small wave clear Dough bonus (3 Dough)
+          activeProfile.bankedDough += 3;
+          state.runDoughEarned += 3;
+          syncProfileToStorage();
+          addFloatingText(width / 2, height * 0.4, 'WAVE CLEARED! +3 DOUGH', '#ffd700', 16);
+          startWave(nextWave);
+        }
+      } else if (gameState === 'TUTORIAL') {
+        if (state.perps.length === 0 && tutorial.step >= 1 && tutorial.step <= 3) {
+          spawnPerp('DRAFT', width / 2, height * 0.27, true);
+        }
+      }
+
+      // Player Projectiles
+      for (let i = state.bullets.length - 1; i >= 0; i--) {
+        const b = state.bullets[i];
+        b.x += b.vx * dt;
+        b.y += b.vy * dt;
+
+        if (b.x < -30 || b.x > width + 30 || b.y < -30 || b.y > height + 30) {
+          state.bullets.splice(i, 1);
+          continue;
+        }
+
+        for (let j = state.perps.length - 1; j >= 0; j--) {
+          const p = state.perps[j];
+          if (Math.hypot(b.x - p.x, b.y - p.y) < b.radius + p.radius) {
+            state.bullets.splice(i, 1);
+            spawnExplosion(b.x, b.y, b.isCrit ? '#ffd700' : (b.isWuv ? '#ff007f' : '#00f3ff'), 5);
+            damagePerp(p, b.dmg, false, b.isCrit);
+            break;
+          }
+        }
+      }
+
+      // Hostile Perp Projectiles (Red-Ink Citations)
+      for (let i = state.enemyBullets.length - 1; i >= 0; i--) {
+        const eb = state.enemyBullets[i];
+        eb.x += eb.vx * dt;
+        eb.y += eb.vy * dt;
+
+        if (eb.x < -30 || eb.x > width + 30 || eb.y < -30 || eb.y > height + 30) {
+          state.enemyBullets.splice(i, 1);
+          continue;
+        }
+
+        if (Math.hypot(eb.x - state.player.x, eb.y - state.player.y) < eb.radius + state.player.radius - 4) {
+          state.enemyBullets.splice(i, 1);
+          spawnExplosion(eb.x, eb.y, '#ff2a4b', 10);
+          takePlayerDamage(eb.dmg, 'CITATION HIT!');
+          if (gameState === 'GAMEOVER') return;
+        }
+      }
+
+      // Perps Movement, Aggressive Firing & Collision
+      const breachLineY = height - 88;
+      for (let i = state.perps.length - 1; i >= 0; i--) {
+        const p = state.perps[i];
+        p.wobblePhase += dt * p.wobbleFreq;
+        if (p.hitFlash > 0) p.hitFlash -= dt;
+
+        const steerToPlayer = (state.player.x - p.x) * (p.type === 'LOAF' ? 0.65 : 0.35);
+        p.x += (Math.cos(p.wobblePhase) * p.wobbleAmp + steerToPlayer) * dt;
+        p.x = Math.max(p.radius + 10, Math.min(width - p.radius - 10, p.x));
+        p.y += p.speed * dt;
+
+        // Hostile Perp firing logic (Only in active combat, not tutorial)
+        if (!p.isTutorialTarget && gameState === 'PLAYING' && p.y > 40 && p.y < height * 0.62) {
+          p.fireTimer -= dt;
+          if (p.fireTimer <= 0) {
+            p.fireTimer = p.fireInterval;
+            const aimAng = Math.atan2(state.player.y - p.y, state.player.x - p.x);
+            const boltSpeed = 285 + state.wave * 18;
+            const boltDmg = 10 + Math.floor(state.wave * 1.5);
+
+            state.enemyBullets.push({
+              x: p.x,
+              y: p.y + 14,
+              vx: Math.cos(aimAng) * boltSpeed,
+              vy: Math.sin(aimAng) * boltSpeed,
+              dmg: boltDmg,
+              radius: 5.5
+            });
+
+            // Titans fire a twin spread shot!
+            if (p.type === 'TITAN') {
+              [-0.22, 0.22].forEach((off) => {
+                state.enemyBullets.push({
+                  x: p.x,
+                  y: p.y + 14,
+                  vx: Math.cos(aimAng + off) * boltSpeed,
+                  vy: Math.sin(aimAng + off) * boltSpeed,
+                  dmg: boltDmg,
+                  radius: 5
+                });
+              });
+            }
+            sfx.playEnemyShot();
+          }
+        }
+
+        // Direct collision with Sebi's ship
+        if (!p.isTutorialTarget && Math.hypot(p.x - state.player.x, p.y - state.player.y) < p.radius + state.player.radius - 5) {
+          state.perps.splice(i, 1);
+          spawnExplosion(p.x, p.y, '#ff2a4b', 16);
+          takePlayerDamage(18, 'COLLISION!');
+          if (gameState === 'GAMEOVER') return;
+          continue;
+        }
+
+        if (p.isTutorialTarget && p.y > height * 0.45) {
+          p.y = height * 0.25;
+        }
+
+        if (!p.isTutorialTarget && p.y >= breachLineY) {
+          state.perps.splice(i, 1);
+          const dmgTaken = p.type === 'TITAN' ? 28 : (p.type === 'LOAF' ? 24 : 16);
+          spawnExplosion(p.x, breachLineY, '#ff2a4b', 18);
+          takePlayerDamage(dmgTaken, 'BREACH!');
+          if (gameState === 'GAMEOVER') return;
+        }
+      }
+
+      // Magnetic Dough Shard Pickups
+      for (let i = state.doughDrops.length - 1; i >= 0; i--) {
+        const d = state.doughDrops[i];
+        d.life -= dt;
+        d.vy += 140 * dt; // Gentle drift down
+        d.x += d.vx * dt;
+        d.y += d.vy * dt;
+
+        // Magnetic pull toward player when nearby
+        const dist = Math.hypot(state.player.x - d.x, state.player.y - d.y);
+        if (dist < 175) {
+          const pullAng = Math.atan2(state.player.y - d.y, state.player.x - d.x);
+          d.x += Math.cos(pullAng) * 440 * dt;
+          d.y += Math.sin(pullAng) * 440 * dt;
+        }
+
+        if (dist < state.player.radius + 18) {
+          activeProfile.bankedDough += d.amount;
+          state.runDoughEarned += d.amount;
+          syncProfileToStorage();
+          sfx.playDoughPickup();
+          addFloatingText(d.x, d.y - 12, `+${d.amount} DOUGH`, '#ffd700', 14);
+          state.doughDrops.splice(i, 1);
+          updateHud();
+          continue;
+        }
+
+        if (d.life <= 0 || d.y > height + 30) {
+          state.doughDrops.splice(i, 1);
+        }
+      }
+
+      // Particles & Floating Texts
+      for (let i = state.particles.length - 1; i >= 0; i--) {
+        const pt = state.particles[i];
+        pt.x += pt.vx * dt;
+        pt.y += pt.vy * dt;
+        pt.life -= dt;
+        if (pt.life <= 0) state.particles.splice(i, 1);
+      }
+
+      for (let i = state.floatingTexts.length - 1; i >= 0; i--) {
+        const ft = state.floatingTexts[i];
+        ft.y -= 44 * dt;
+        ft.life -= dt;
+        if (ft.life <= 0) state.floatingTexts.splice(i, 1);
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // 12. CANVAS RENDERING
+    // --------------------------------------------------------------------------
+    function drawCyberGrid() {
+      ctx.fillStyle = '#030306';
+      ctx.fillRect(0, 0, width, height);
+
+      const grad = ctx.createRadialGradient(width / 2, height * 0.65, 20, width / 2, height * 0.5, Math.max(width, height) * 0.75);
+      grad.addColorStop(0, state.wuv.active ? 'rgba(255, 0, 127, 0.16)' : 'rgba(0, 243, 255, 0.11)');
+      grad.addColorStop(1, 'rgba(3, 3, 6, 0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.strokeStyle = state.puma.active ? 'rgba(0, 243, 255, 0.18)' : 'rgba(0, 243, 255, 0.07)';
+      ctx.lineWidth = 1;
+      const step = 48;
+
+      for (let x = 0; x < width; x += step) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      for (let y = state.gridOffset - step; y < height; y += step) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      if (gameState === 'PLAYING' || gameState === 'TUTORIAL') {
+        const lineY = height - 88;
+        ctx.strokeStyle = 'rgba(255, 42, 75, 0.55)';
+        ctx.setLineDash([10, 8]);
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, lineY);
+        ctx.lineTo(width, lineY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+
+    function drawPerpEntity(p) {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(Math.sin(p.wobblePhase) * 0.14);
+
+      if (p.type === 'LOAF') {
+        ctx.shadowColor = '#ffd700';
+        ctx.shadowBlur = 18;
+        ctx.fillStyle = p.hitFlash > 0 ? '#ffffff' : '#b45309';
+        ctx.strokeStyle = '#ff2a4b';
+        ctx.lineWidth = 3;
+
+        ctx.beginPath();
+        ctx.roundRect(-28, -16, 56, 36, [18, 18, 8, 8]);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 2.5;
+        [-12, 0, 12].forEach((sx) => {
+          ctx.beginPath();
+          ctx.moveTo(sx - 4, -12);
+          ctx.lineTo(sx + 4, -3);
+          ctx.stroke();
+        });
+
+        ctx.fillStyle = '#ff0033';
+        ctx.beginPath();
+        ctx.arc(-10, 4, 4, 0, Math.PI * 2);
+        ctx.arc(10, 4, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(-16, -2);
+        ctx.lineTo(-5, 2);
+        ctx.moveTo(16, -2);
+        ctx.lineTo(5, 2);
+        ctx.stroke();
+      } else {
+        const scale = p.type === 'TITAN' ? 1.25 : 1.0;
+        ctx.scale(scale, scale);
+        const w = 38;
+        const h = 48;
+        const glowColor = p.type === 'TITAN' ? '#b829ff' : (p.type === 'ENFORCER' ? '#ff007f' : '#ff2a4b');
+
+        ctx.shadowColor = glowColor;
+        ctx.shadowBlur = p.isTutorialTarget ? 26 : 14;
+
+        ctx.fillStyle = p.hitFlash > 0 ? '#ffccd5' : '#f1f5f9';
+        ctx.strokeStyle = glowColor;
+        ctx.lineWidth = 2.5;
+
+        ctx.beginPath();
+        ctx.moveTo(-w / 2, -h / 2);
+        ctx.lineTo(w / 2 - 10, -h / 2);
+        ctx.lineTo(w / 2, -h / 2 + 10);
+        ctx.lineTo(w / 2, h / 2);
+        ctx.lineTo(-w / 2, h / 2);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#cbd5e1';
+        ctx.beginPath();
+        ctx.moveTo(w / 2 - 10, -h / 2);
+        ctx.lineTo(w / 2 - 10, -h / 2 + 10);
+        ctx.lineTo(w / 2, -h / 2 + 10);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.strokeStyle = '#64748b';
+        ctx.lineWidth = 1.8;
+        [-12, -5, 11].forEach((ly) => {
+          ctx.beginPath();
+          ctx.moveTo(-12, ly);
+          ctx.lineTo(10, ly);
+          ctx.stroke();
+        });
+
+        ctx.fillStyle = '#ff0033';
+        ctx.beginPath();
+        ctx.arc(-7, 2, 3.3, 0, Math.PI * 2);
+        ctx.arc(7, 2, 3.3, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = '#99001a';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(-12, -3);
+        ctx.lineTo(-3, 0);
+        ctx.moveTo(12, -3);
+        ctx.lineTo(3, 0);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+
+      const barW = 42;
+      const hpRatio = Math.max(0, p.hp / p.maxHp);
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+      ctx.fillRect(p.x - barW / 2, p.y - p.radius - 13, barW, 5);
+      ctx.fillStyle = p.type === 'LOAF' ? '#ffd700' : '#ff2a4b';
+      ctx.fillRect(p.x - barW / 2, p.y - p.radius - 13, barW * hpRatio, 5);
+
+      if (p.type === 'LOAF' || p.type === 'TITAN' || p.isTutorialTarget) {
+        ctx.font = '800 9px "Orbitron", sans-serif';
+        ctx.fillStyle = p.type === 'LOAF' ? '#ffd700' : (p.type === 'TITAN' ? '#d8b4fe' : '#00f3ff');
+        ctx.textAlign = 'center';
+        const tag = p.isTutorialTarget ? 'TARGET PERP' : (p.type === 'LOAF' ? 'EVIL LOAF' : 'DEFENSE TITAN');
+        ctx.fillText(tag, p.x, p.y - p.radius - 17);
+      }
+    }
+
+    function drawDoughShard(d) {
+      ctx.save();
+      ctx.translate(d.x, d.y);
+      ctx.shadowColor = '#ffd700';
+      ctx.shadowBlur = 14;
+      ctx.fillStyle = '#fbbf24';
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1.5;
+
+      ctx.beginPath();
+      ctx.arc(0, 0, 9, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#020617';
+      ctx.font = '900 9px "Orbitron", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('Ð', 0, 0.5);
+      ctx.restore();
+    }
+
+    function drawPlayerAvatar() {
+      const p = state.player;
+
+      p.trail.forEach((tr) => {
+        ctx.save();
+        ctx.globalAlpha = tr.life * 1.8;
+        ctx.fillStyle = '#00f3ff';
+        ctx.beginPath();
+        ctx.arc(tr.x, tr.y, 15, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      ctx.save();
+      ctx.strokeStyle = state.wuv.active ? 'rgba(255, 0, 127, 0.28)' : 'rgba(0, 243, 255, 0.22)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([6, 6]);
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      ctx.lineTo(state.pointer.x, state.pointer.y);
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.save();
+      if (p.invulnTimer > 0 && Math.floor(p.invulnTimer * 20) % 2 === 0) {
+        ctx.globalAlpha = 0.45;
+      }
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.angle + Math.PI / 2);
+
+      const coreColor = state.wuv.active ? '#ff007f' : (state.puma.active ? '#00f3ff' : '#38bdf8');
+      ctx.shadowColor = coreColor;
+      ctx.shadowBlur = 20;
+
+      ctx.fillStyle = '#090d1a';
+      ctx.strokeStyle = coreColor;
+      ctx.lineWidth = 3;
+
+      ctx.beginPath();
+      ctx.moveTo(0, -24);
+      ctx.lineTo(18, 16);
+      ctx.lineTo(0, 9);
+      ctx.lineTo(-18, 16);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = state.wuv.active ? '#ff66b2' : '#00f3ff';
+      ctx.beginPath();
+      ctx.arc(0, 0, 5.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+
+      // Draw Orbital Cyber-Shark Drones
+      const droneCount = activeProfile.upgrades.drone;
+      for (let d = 0; d < droneCount; d++) {
+        const angOffset = state.droneAngle + (d * Math.PI * 2) / droneCount;
+        const dx = p.x + Math.cos(angOffset) * 46;
+        const dy = p.y + Math.sin(angOffset) * 46;
+        ctx.save();
+        ctx.fillStyle = '#ffd700';
+        ctx.shadowColor = '#ffd700';
+        ctx.shadowBlur = 12;
+        ctx.beginPath();
+        ctx.arc(dx, dy, 6.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function drawCyberShark(s) {
+      ctx.save();
+      ctx.translate(s.x, s.y + Math.sin(s.wavePhase) * 10);
+      if (s.vx < 0) ctx.scale(-1, 1);
+
+      ctx.shadowColor = '#00f3ff';
+      ctx.shadowBlur = 18;
+      ctx.fillStyle = '#00f3ff';
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+
+      const sz = s.size;
+      ctx.beginPath();
+      ctx.moveTo(-sz, 0);
+      ctx.quadraticCurveTo(0, -sz * 0.65, sz * 0.85, -sz * 0.15);
+      ctx.lineTo(sz * 1.2, -sz * 0.45);
+      ctx.lineTo(sz * 1.05, 0);
+      ctx.lineTo(sz * 1.2, sz * 0.45);
+      ctx.lineTo(sz * 0.85, sz * 0.15);
+      ctx.quadraticCurveTo(0, sz * 0.55, -sz, 0);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#ff007f';
+      ctx.beginPath();
+      ctx.moveTo(-sz * 0.1, -sz * 0.35);
+      ctx.lineTo(sz * 0.12, -sz * 0.82);
+      ctx.lineTo(sz * 0.3, -sz * 0.3);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function drawHeart(h) {
+      ctx.save();
+      ctx.translate(h.x, h.y);
+      ctx.fillStyle = h.color;
+      ctx.shadowColor = h.color;
+      ctx.shadowBlur = 12;
+      const s = h.size * 0.5;
+      ctx.beginPath();
+      ctx.moveTo(0, s * 0.6);
+      ctx.bezierCurveTo(-s * 1.5, -s * 0.6, -s * 0.5, -s * 1.6, 0, -s * 0.6);
+      ctx.bezierCurveTo(s * 0.5, -s * 1.6, s * 1.5, -s * 0.6, 0, s * 0.6);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function render() {
+      ctx.save();
+      if (state.screenShake > 0) {
+        const sx = (Math.random() - 0.5) * state.screenShake;
+        const sy = (Math.random() - 0.5) * state.screenShake;
+        ctx.translate(sx, sy);
+      }
+
+      drawCyberGrid();
+
+      // Player Bullets
+      state.bullets.forEach((b) => {
+        ctx.save();
+        ctx.fillStyle = b.isCrit ? '#ffd700' : (b.isWuv ? '#ff007f' : '#00f3ff');
+        ctx.shadowColor = ctx.fillStyle;
+        ctx.shadowBlur = 14;
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      // Hostile Red-Ink Citations
+      state.enemyBullets.forEach((eb) => {
+        ctx.save();
+        ctx.fillStyle = '#ff2a4b';
+        ctx.shadowColor = '#ff2a4b';
+        ctx.shadowBlur = 14;
+        ctx.beginPath();
+        ctx.arc(eb.x, eb.y, eb.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(eb.x, eb.y, eb.radius * 0.4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      state.doughDrops.forEach(drawDoughShard);
+      state.perps.forEach(drawPerpEntity);
+
+      if (gameState === 'PLAYING' || gameState === 'TUTORIAL' || gameState === 'SHOP') {
+        drawPlayerAvatar();
+      }
+
+      state.particles.forEach((pt) => {
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, pt.life / pt.maxLife);
+        ctx.fillStyle = pt.color;
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      state.hearts.forEach(drawHeart);
+      state.sharks.forEach(drawCyberShark);
+
+      state.floatingTexts.forEach((ft) => {
+        ctx.save();
+        ctx.globalAlpha = Math.min(1, ft.life * 1.3);
+        ctx.font = `900 ${ft.size}px "Orbitron", sans-serif`;
+        ctx.fillStyle = ft.color;
+        ctx.shadowColor = '#000000';
+        ctx.shadowBlur = 6;
+        ctx.textAlign = 'center';
+        ctx.fillText(ft.text, ft.x, ft.y);
+        ctx.restore();
+      });
+
+      ctx.restore();
+    }
+
+    function gameLoop(now) {
+      const dt = Math.min(0.05, (now - lastTime) / 1000);
+      lastTime = now;
+
+      update(dt);
+      render();
+      requestAnimationFrame(gameLoop);
+    }
+
+    window.onload = () => {
+      requestAnimationFrame(gameLoop);
+    };
+  </script>
+</body>
+</html>
